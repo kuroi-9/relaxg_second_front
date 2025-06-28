@@ -19,7 +19,7 @@ const login = async (
         return response.data;
     } catch (error) {
         // Use 'any' for a generic error type or refine with AxiosError
-        console.error("Échec de la connexion:", error);
+        console.error("Login failed:", error);
         throw error;
     }
 };
@@ -57,7 +57,7 @@ const refreshToken = async (): Promise<string | null> => {
         return null;
     } catch (error) {
         // Handle refresh token errors
-        console.error("Échec du rafraîchissement du token:", error);
+        console.error("Failed to refresh the token:", error);
         logout(); // If the refresh token is invalid, log out
         throw error;
     }

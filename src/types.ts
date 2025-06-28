@@ -5,9 +5,7 @@ export interface AuthTokens {
 
 export interface User {
     username: string;
-    // Ajoutez d'autres propriétés de l'utilisateur si elles sont décodées du token ou récupérées
-    // ex: id: number;
-    // ex: email: string;
+    // To be completed
 }
 
 export interface AuthContextType {
@@ -16,5 +14,5 @@ export interface AuthContextType {
     isLoading: boolean;
     login: (username: string, password: string) => Promise<boolean>;
     logout: () => void;
-    // Ajoutez getAccessToken si vous voulez l'exposer via le contexte (pour les intercepteurs)
+    // Add getAccessToken to expose it via the context (for interceptors)
 }
