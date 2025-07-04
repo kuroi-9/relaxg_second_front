@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     );
 
     if (loading) {
-        return <div>Loading authentication...</div>; // TODO: Add a spinner or a loading message
+        return <div>Chargement de l'authentification...</div>; // TODO: Add a spinner or a loading message
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import "./LoginPage.style.css";
 
 function LoginPage() {
     const [username, setUsername] = useState<string>("");
@@ -24,21 +25,33 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h2>Connexion</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">Nom d'utilisateur:</label>
+        <div className="flex flex-col items-center justify-center h-screen">
+            <h2 className="mid-heading">Connexion</h2>
+            <form
+                onSubmit={handleSubmit}
+                className="grid grid-rows-[1fr_1fr_1fr] gap-2 w-1/5"
+            >
+                <div className="grid grid-cols-[10rem_1fr] p-4 border border-zinc-700 rounded-md">
+                    <div className="flex items-center">
+                        <label htmlFor="username" className="text-start">
+                            Identifiant
+                        </label>
+                    </div>
                     <input
                         id="username"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        className="border-b outline-none"
                     />
                 </div>
-                <div>
-                    <label htmlFor="password">Mot de passe:</label>
+                <div className="grid grid-cols-[10rem_1fr] p-4 border border-zinc-700 rounded-md">
+                    <div className="flex items-center">
+                        <label htmlFor="password" className="text-start">
+                            Mot de passe
+                        </label>
+                    </div>
                     <input
                         id="password"
                         type="password"
@@ -51,6 +64,7 @@ function LoginPage() {
                             )
                         } // Filtering spaces as the user types
                         required
+                        className="border-b outline-none"
                     />
                 </div>
                 <button type="submit">Se connecter</button>
