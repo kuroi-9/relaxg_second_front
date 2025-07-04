@@ -3,12 +3,12 @@ import { useAuth } from "../../hooks/useAuth";
 
 // Private (protected) layout
 const PrivateLayout: React.FC = () => {
-    const { isAuthenticated, isLoading } = useAuth(); // No need for logout here, it's handled in ProtectedPageContent
+    const { isAuthenticated, loading } = useAuth(); // No need for logout here, it's handled in ProtectedPageContent
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div style={{ textAlign: "center", padding: "50px" }}>
-                Loading authentication...
+                Chargement de l'authentification...
             </div>
         );
     }
