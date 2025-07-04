@@ -1,79 +1,119 @@
-import React, { useState, useEffect, useCallback } from "react";
-import authService from "../services/authService";
-import type { AuthContextType, User } from "../types";
-import { AuthContext } from "./AuthContextDefinition";
+import React, {
+    useState,
+    useEffect,
+    useMemo,
+    useCallback,
+    useRef,
+} from "react";
+import AuthService from "../services/authService";
+import axiosInstance from "../api/axios";
+import { type User, type AuthContextType } from "../types"; // Importe tes types
+import type { AxiosError } from "axios";
+import AuthContext from "./AuthContextDefinition";
+import type { ExtendedAxiosRequestConfig } from "../interfaces";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
+    const logoutRef = useRef<(() => Promise<void>) | null>(null);
 
-    const initializeAuth = useCallback(async () => {
-        setIsLoading(true);
-        const accessToken = authService.getAccessToken();
-        const refreshToken = authService.getRefreshToken();
-
-        if (accessToken) {
-            // In a real application, you would decode the JWT here to extract user information
-            // For this ultra-minimal example, we simulate a user
-            setIsAuthenticated(true);
-            setUser({ username: "MinimalUser" });
-        } else if (refreshToken) {
+    const handleLogin = useCallback(
+        async (username: string, password: string): Promise<boolean> => {
             try {
-                const newAccessToken = await authService.refreshToken();
-                if (newAccessToken) {
-                    setIsAuthenticated(true);
-                    setUser({ username: "MinimalUser" });
-                } else {
-                    handleLogout(); // If the refresh fails, log out
-                }
-            } catch (error) {
-                console.error("Error during token refresh:", error);
-                handleLogout(); // If the refresh fails, log out
+                const userData = await AuthService.login(username, password);
+                setUser(userData);
+                return true;
+            } catch (error: unknown) {
+                setUser(null);
+                throw error;
             }
-        } else {
-            setIsAuthenticated(false);
+        },
+        [],
+    );
+
+    const handleLogout = useCallback(async (): Promise<void> => {
+        try {
+            await AuthService.logout();
+            setUser(null);
+        } catch (error) {
+            console.error("Error during logout:", error);
             setUser(null);
         }
-        setIsLoading(false);
     }, []);
 
+    // Update logoutRef when handleLogout changes (which is rare thanks to useCallback)
     useEffect(() => {
-        initializeAuth();
-    }, [initializeAuth]);
+        logoutRef.current = handleLogout;
+    }, [handleLogout]);
 
-    const handleLogin = async (
-        username: string,
-        password: string,
-    ): Promise<boolean> => {
-        try {
-            await authService.login(username, password);
-            await initializeAuth(); // Re-initialize the state after a successful login
-            return true;
-        } catch (error) {
-            console.error("Error in handleLogin:", error);
-            throw error;
-        }
-    };
+    useEffect(() => {
+        const checkAuthStatus = async () => {
+            try {
+                const userData = await AuthService.getUserInfo();
+                setUser(userData);
+            } catch {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const handleLogout = (): void => {
-        authService.logout();
-        setIsAuthenticated(false);
-        setUser(null);
-    };
+        checkAuthStatus();
 
-    const authContextValue: AuthContextType = {
-        user,
-        isAuthenticated,
-        isLoading,
-        login: handleLogin,
-        logout: handleLogout,
-    };
+        // Add the second response interceptor after initial status check
+        // to ensure `handleLogout` is defined.
+        const interceptor = axiosInstance.interceptors.response.use(
+            (response) => response,
+            (error: AxiosError) => {
+                if (
+                    error.response?.status === 401 &&
+                    (error.config as ExtendedAxiosRequestConfig)?._retry &&
+                    !error.config?.url?.includes("/token/refresh/")
+                ) {
+                    console.warn(
+                        "Auth failed after refresh attempt (or no refresh token available), logging out...",
+                    );
+                    if (logoutRef.current) {
+                        logoutRef.current(); // Logout using the ref of the logout function
+                    } else {
+                        console.error(
+                            "Logout function not available in interceptor.",
+                        );
+                        // Fallback if the logout function is not available
+                        setUser(null);
+                        window.location.href = "/login";
+                    }
+                }
+                return Promise.reject(error);
+            },
+        );
+
+        return () => {
+            axiosInstance.interceptors.response.eject(interceptor);
+        };
+    }, []);
+
+    const isAuthenticated = useMemo(() => !!user, [user]);
+
+    const contextValue = useMemo<AuthContextType>(
+        () => ({
+            user,
+            loading,
+            isAuthenticated,
+            login: handleLogin,
+            logout: handleLogout,
+        }),
+        [user, loading, isAuthenticated, handleLogin, handleLogout],
+    );
+
+    if (loading) {
+        return <div>Loading authentication...</div>; // TODO: Add a spinner or a loading message
+    }
 
     return (
-        <AuthContext.Provider value={authContextValue}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

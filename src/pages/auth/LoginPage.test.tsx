@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import * as useAuthHook from "../../hooks/useAuth";
 import LoginPage from "./LoginPage";
 
 // Mock the useAuth hook
 vi.mock("../../hooks/useAuth", () => ({
-    // Mocking the useAuth hook to control its behavior in tests
     useAuth: vi.fn(),
 }));
 
@@ -14,7 +13,6 @@ const mockLogin = vi.fn();
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", async () => {
-    // Mocking the useNavigate function from react-router-dom
     const actual = await vi.importActual("react-router-dom");
     return {
         ...actual,
@@ -22,78 +20,164 @@ vi.mock("react-router-dom", async () => {
     };
 });
 
-describe("LoginPage", () => {
-    const useAuthSpy = vi.spyOn(useAuthHook, "useAuth"); // Creating a spy on the useAuth hook to mock its return values
+describe("Login", () => {
+    const useAuthSpy = vi.spyOn(useAuthHook, "useAuth");
 
     beforeEach(() => {
-        vi.clearAllMocks(); // Clearing all mocks before each test to ensure no state leakage between tests
+        vi.clearAllMocks();
         useAuthSpy.mockReturnValue({
-            login: mockLogin, // Mocking the login function to simulate login behavior
+            login: mockLogin,
             user: null,
             isAuthenticated: false,
-            isLoading: false,
+            loading: false,
             logout: vi.fn(),
         });
     });
 
     const renderWithRouter = (ui: React.ReactElement) => {
-        // Utility function to render components with a BrowserRouter context
         return render(<BrowserRouter>{ui}</BrowserRouter>);
     };
 
-    it("should render the login form", () => {
-        renderWithRouter(<LoginPage />); // Rendering the LoginPage component for testing
+    it("should render the login form with French labels", () => {
+        renderWithRouter(<LoginPage />);
 
-        expect(screen.getByLabelText(/username/i)).toBeTruthy(); // Verifying that the username input field is present
-        expect(screen.getByLabelText(/password/i)).toBeTruthy(); // Verifying that the password input field is present
-        expect(screen.getByRole("button", { name: /login/i })).toBeTruthy(); // Verifying that the login button is present
+        expect(screen.getByText("Connexion")).toBeTruthy();
+        expect(screen.getByLabelText(/nom d'utilisateur/i)).toBeTruthy();
+        expect(screen.getByLabelText(/mot de passe/i)).toBeTruthy();
+        expect(
+            screen.getByRole("button", { name: /se connecter/i }),
+        ).toBeTruthy();
     });
 
-    it("should display an error message if login fails", async () => {
-        mockLogin.mockRejectedValueOnce(new Error("Invalid credentials")); // Simulating a failed login attempt
+    it("should update username input value", () => {
+        renderWithRouter(<LoginPage />);
+
+        const usernameInput = screen.getByLabelText(
+            /nom d'utilisateur/i,
+        ) as HTMLInputElement;
+        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+
+        expect(usernameInput.value).toBe("testuser");
+    });
+
+    it("should update password input value", () => {
+        renderWithRouter(<LoginPage />);
+
+        const passwordInput = screen.getByLabelText(
+            /mot de passe/i,
+        ) as HTMLInputElement;
+        fireEvent.change(passwordInput, { target: { value: "testpassword" } });
+
+        expect(passwordInput.value).toBe("testpassword");
+    });
+
+    it("should filter out spaces from password input", () => {
+        renderWithRouter(<LoginPage />);
+
+        const passwordInput = screen.getByLabelText(
+            /mot de passe/i,
+        ) as HTMLInputElement;
+        fireEvent.change(passwordInput, { target: { value: "test password" } });
+
+        expect(passwordInput.value).toBe("");
+    });
+
+    it("should display error message when login fails", async () => {
+        mockLogin.mockRejectedValueOnce(new Error("Invalid credentials"));
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/username/i); // Selecting the username input field
-        const passwordInput = screen.getByLabelText(/password/i); // Selecting the password input field
-        const loginButton = screen.getByRole("button", { name: /login/i }); // Selecting the login button
+        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const loginButton = screen.getByRole("button", {
+            name: /se connecter/i,
+        });
 
-        fireEvent.change(usernameInput, { target: { value: "testuser" } }); // Simulating user input for the username field
-        fireEvent.change(passwordInput, { target: { value: "wrongpassword" } }); // Simulating user input for the password field
-        fireEvent.click(loginButton); // Simulating a click on the login button
+        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
+        fireEvent.click(loginButton);
 
-        const errorMessage = await screen.findByText(/login failed/i); // Verifying that the error message is displayed
-        expect(errorMessage).toBeTruthy(); // Ensuring the error message is present in the DOM
-        expect(mockLogin).toHaveBeenCalledWith("testuser", "wrongpassword"); // Verifying that the login function was called with the correct arguments
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    "Login failed. Please check your credentials.",
+                ),
+            ).toBeTruthy();
+        });
+        expect(mockLogin).toHaveBeenCalledWith("testuser", "wrongpassword");
     });
 
-    it("should navigate to the dashboard on successful login", async () => {
-        mockLogin.mockResolvedValueOnce(true); // Simulating a successful login attempt
+    it("should navigate to dashboard on successful login", async () => {
+        mockLogin.mockResolvedValueOnce({ success: true });
 
-        renderWithRouter(<LoginPage />); // Rendering the LoginPage component for testing
+        renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/username/i); // Selecting the username input field
-        const passwordInput = screen.getByLabelText(/password/i); // Selecting the password input field
-        const loginButton = screen.getByRole("button", { name: /login/i }); // Selecting the login button
+        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const loginButton = screen.getByRole("button", {
+            name: /se connecter/i,
+        });
 
-        fireEvent.change(usernameInput, { target: { value: "testuser" } }); // Simulating user input for the username field
+        fireEvent.change(usernameInput, { target: { value: "testuser" } });
         fireEvent.change(passwordInput, {
-            // Simulating user input for the password field
             target: { value: "correctpassword" },
         });
-        fireEvent.click(loginButton); // Simulating a click on the login button
+        fireEvent.click(loginButton);
 
-        await screen.findByRole("button", { name: /login/i }); // Waiting for the button to re-enable after the login attempt
-        expect(mockLogin).toHaveBeenCalledWith("testuser", "correctpassword"); // Verifying that the login function was called with the correct arguments
-        expect(mockNavigate).toHaveBeenCalledWith("/dashboard"); // Verifying that the user was navigated to the dashboard
+        await waitFor(() => {
+            expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
+        });
+        expect(mockLogin).toHaveBeenCalledWith("testuser", "correctpassword");
     });
 
-    it("should not call login if fields are empty", () => {
+    it("should clear error message on new submit attempt", async () => {
+        mockLogin.mockRejectedValueOnce(new Error("Invalid credentials"));
+
         renderWithRouter(<LoginPage />);
 
-        const loginButton = screen.getByRole("button", { name: /login/i }); // Selecting the login button
-        fireEvent.click(loginButton); // Simulating a click on the login button without filling the fields
+        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const loginButton = screen.getByRole("button", {
+            name: /se connecter/i,
+        });
 
-        expect(mockLogin).not.toHaveBeenCalled(); // Ensuring the login function was not called
+        // First failed attempt
+        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
+        fireEvent.click(loginButton);
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    "Login failed. Please check your credentials.",
+                ),
+            ).toBeTruthy();
+        });
+
+        // Second attempt should clear the error
+        mockLogin.mockResolvedValueOnce({ success: true });
+        fireEvent.change(passwordInput, {
+            target: { value: "correctpassword" },
+        });
+        fireEvent.click(loginButton);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    "Login failed. Please check your credentials.",
+                ),
+            ).toBeFalsy();
+        });
+    });
+
+    it("should have required attributes on inputs", () => {
+        renderWithRouter(<LoginPage />);
+
+        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const passwordInput = screen.getByLabelText(/mot de passe/i);
+
+        expect(usernameInput.hasAttribute("required")).toBe(true);
+        expect(passwordInput.hasAttribute("required")).toBe(true);
+        expect(passwordInput.getAttribute("type")).toBe("password");
     });
 });

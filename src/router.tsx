@@ -15,9 +15,9 @@ import PrivateLayout from "./pages/protected/Layout.tsx";
 
 // Public layout (for the login page)
 const PublicAuthLayout: React.FC = () => {
-    const { isAuthenticated, isLoading } = useAuth();
+    const { isAuthenticated, loading } = useAuth();
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div style={{ textAlign: "center", padding: "50px" }}>
                 Loading...

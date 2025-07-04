@@ -1,121 +1,63 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-const LoginPage: React.FC = () => {
+function LoginPage() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const { login } = useAuth();
     const navigate = useNavigate();
-    const { login } = useAuth(); // Retrieves the typed 'login' function from the context
 
     const handleSubmit = async (e: React.FormEvent) => {
-        // Type for the form event
         e.preventDefault();
         setError("");
-
         try {
-            await login(username, password);
+            const response = await login(username, password);
+            console.log(response);
             navigate("/dashboard");
         } catch (err) {
-            // Type for the error
-            setError("Login failed. Please check your credentials.");
-            console.error("Login failed:", err);
+            const errorMessage = "Login failed. Please check your credentials.";
+            setError(errorMessage);
+            console.error("Login component error:", err);
         }
     };
 
     return (
-        <div
-            style={{
-                maxWidth: "400px",
-                margin: "50px auto",
-                padding: "20px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                boxShadow: "2px 2px 8px rgba(0,0,0,0.1)",
-            }}
-        >
-            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-                Login page
-            </h2>
-            {error && (
-                <p
-                    style={{
-                        color: "red",
-                        textAlign: "center",
-                        marginBottom: "15px",
-                    }}
-                >
-                    {error}
-                </p>
-            )}
+        <div>
+            <h2>Connexion</h2>
             <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: "15px" }}>
-                    <label
-                        htmlFor="username"
-                        style={{ display: "block", marginBottom: "5px" }}
-                    >
-                        Username:
-                    </label>
+                <div>
+                    <label htmlFor="username">Nom d'utilisateur:</label>
                     <input
-                        type="text"
                         id="username"
+                        type="text"
                         value={username}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setUsername(e.target.value)
-                        } // Type for the onChange event
+                        onChange={(e) => setUsername(e.target.value)}
                         required
-                        style={{
-                            width: "100%",
-                            padding: "8px",
-                            boxSizing: "border-box",
-                            borderRadius: "4px",
-                            border: "1px solid #ddd",
-                        }}
                     />
                 </div>
-                <div style={{ marginBottom: "20px" }}>
-                    <label
-                        htmlFor="password"
-                        style={{ display: "block", marginBottom: "5px" }}
-                    >
-                        Password:
-                    </label>
+                <div>
+                    <label htmlFor="password">Mot de passe:</label>
                     <input
-                        type="password"
                         id="password"
+                        type="password"
                         value={password}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setPassword(e.target.value)
-                        } // Type for the onChange event
+                        onChange={(e) =>
+                            setPassword(
+                                e.target.value.includes(" ")
+                                    ? ""
+                                    : e.target.value,
+                            )
+                        } // Filtering spaces as the user types
                         required
-                        style={{
-                            width: "100%",
-                            padding: "8px",
-                            boxSizing: "border-box",
-                            borderRadius: "4px",
-                            border: "1px solid #ddd",
-                        }}
                     />
                 </div>
-                <button
-                    type="submit"
-                    style={{
-                        width: "100%",
-                        padding: "10px 15px",
-                        backgroundColor: "#007bff",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                    }}
-                >
-                    Login
-                </button>
+                <button type="submit">Se connecter</button>
+                {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
         </div>
     );
-};
+}
 
 export default LoginPage;
