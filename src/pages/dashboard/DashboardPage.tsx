@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import axiosInstance from "../../api/axios";
+import DashboardTopNav from "../../components/dashboard/DashboardTopNav";
 
 function DashboardPage() {
     const { user, isAuthenticated, logout } = useAuth();
@@ -29,21 +30,8 @@ function DashboardPage() {
     }
 
     return (
-        <div>
-            <h1>Tableau de bord</h1>
-            {user && <p>Bienvenue, {user.username}!</p>}
-            <button onClick={logout}>Déconnexion</button>
-
-            <h2>Données Protégées</h2>
-            <button onClick={fetchProtectedData}>
-                Charger les données protégées
-            </button>
-            {protectedData ? (
-                <p>{protectedData}</p>
-            ) : (
-                <p>Aucune donnée chargée pour l'instant.</p>
-            )}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="w-full">
+            <DashboardTopNav />
         </div>
     );
 }

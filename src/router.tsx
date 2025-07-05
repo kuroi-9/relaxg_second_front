@@ -1,34 +1,12 @@
 import React from "react";
-import {
-    createBrowserRouter,
-    RouterProvider,
-    Outlet,
-    Navigate,
-} from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Pages
 import LoginPage from "./pages/auth/LoginPage.tsx";
-import DashboardPage from "./pages/protected/DashboardPage.tsx";
+import DashboardPage from "./pages/dashboard/DashboardPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
-import PrivateLayout from "./pages/protected/Layout.tsx";
-
-// Public layout (for the login page)
-const PublicAuthLayout: React.FC = () => {
-    const { isAuthenticated, loading } = useAuth();
-
-    if (loading) {
-        return (
-            <div style={{ textAlign: "center", padding: "50px" }}>
-                Loading...
-            </div>
-        );
-    }
-    if (isAuthenticated) {
-        return <Navigate to="/dashboard" replace />; // Redirect if already logged in
-    }
-    return <Outlet />; // Renders LoginPage
-};
+// Layouts
+import PrivateMainLayout from "./layouts/ProtectedMainLayout.tsx";
+import PublicAuthLayout from "./layouts/PublicAuthLayout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -39,7 +17,7 @@ const router = createBrowserRouter([
         ],
     },
     {
-        element: <PrivateLayout />,
+        element: <PrivateMainLayout />,
         children: [{ path: "/dashboard", element: <DashboardPage /> }],
     },
     {

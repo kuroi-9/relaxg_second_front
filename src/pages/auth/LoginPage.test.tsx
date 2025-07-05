@@ -42,7 +42,7 @@ describe("Login", () => {
         renderWithRouter(<LoginPage />);
 
         expect(screen.getByText("Connexion")).toBeTruthy();
-        expect(screen.getByLabelText(/nom d'utilisateur/i)).toBeTruthy();
+        expect(screen.getByLabelText(/identifiant/i)).toBeTruthy();
         expect(screen.getByLabelText(/mot de passe/i)).toBeTruthy();
         expect(
             screen.getByRole("button", { name: /se connecter/i }),
@@ -53,7 +53,7 @@ describe("Login", () => {
         renderWithRouter(<LoginPage />);
 
         const usernameInput = screen.getByLabelText(
-            /nom d'utilisateur/i,
+            /identifiant/i,
         ) as HTMLInputElement;
         fireEvent.change(usernameInput, { target: { value: "testuser" } });
 
@@ -87,7 +87,7 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const usernameInput = screen.getByLabelText(/identifiant/i);
         const passwordInput = screen.getByLabelText(/mot de passe/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
@@ -112,7 +112,7 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const usernameInput = screen.getByLabelText(/identifiant/i);
         const passwordInput = screen.getByLabelText(/mot de passe/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
@@ -135,7 +135,7 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const usernameInput = screen.getByLabelText(/identifiant/i);
         const passwordInput = screen.getByLabelText(/mot de passe/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
@@ -173,7 +173,7 @@ describe("Login", () => {
     it("should have required attributes on inputs", () => {
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/nom d'utilisateur/i);
+        const usernameInput = screen.getByLabelText(/identifiant/i);
         const passwordInput = screen.getByLabelText(/mot de passe/i);
 
         expect(usernameInput.hasAttribute("required")).toBe(true);

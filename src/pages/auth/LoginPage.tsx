@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import "../../index.css";
 import "./LoginPage.style.css";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
     const [username, setUsername] = useState<string>("");
@@ -25,51 +27,64 @@ function LoginPage() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h2 className="mid-heading">Connexion</h2>
-            <form
-                onSubmit={handleSubmit}
-                className="grid grid-rows-[1fr_1fr_1fr] gap-2 w-1/5"
-            >
-                <div className="grid grid-cols-[10rem_1fr] p-4 border border-zinc-700 rounded-md">
-                    <div className="flex items-center">
-                        <label htmlFor="username" className="text-start">
-                            Identifiant
-                        </label>
+        <div className="h-screen grid items-center">
+            <div className="grid grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
+                <h2 className="mid-heading">Connexion</h2>
+                <form
+                    onSubmit={handleSubmit}
+                    className="grid grid-rows-[1fr_1fr_1fr] gap-2 w-1/4"
+                >
+                    <div className="grid-form-input">
+                        <div className="flex items-center">
+                            <label htmlFor="username" className="text-start">
+                                Identifiant
+                            </label>
+                        </div>
+                        <input
+                            id="username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            className="border-b outline-none"
+                        />
                     </div>
-                    <input
-                        id="username"
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        className="border-b outline-none"
-                    />
-                </div>
-                <div className="grid grid-cols-[10rem_1fr] p-4 border border-zinc-700 rounded-md">
-                    <div className="flex items-center">
-                        <label htmlFor="password" className="text-start">
-                            Mot de passe
-                        </label>
+                    <div className="grid-form-input">
+                        <div className="flex items-center">
+                            <label htmlFor="password" className="text-start">
+                                Mot de passe
+                            </label>
+                        </div>
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) =>
+                                setPassword(
+                                    e.target.value.includes(" ")
+                                        ? ""
+                                        : e.target.value,
+                                )
+                            } // Filtering spaces as the user types
+                            required
+                            className="border-b outline-none"
+                        />
                     </div>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) =>
-                            setPassword(
-                                e.target.value.includes(" ")
-                                    ? ""
-                                    : e.target.value,
-                            )
-                        } // Filtering spaces as the user types
-                        required
-                        className="border-b outline-none"
-                    />
+                    <button type="submit" className="primary-button">
+                        Se connecter
+                    </button>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                </form>
+                <h4 className="text-center">
+                    Pas encore de compte ?{" "}
+                    <Link to="/register">Inscrivez-vous</Link>
+                </h4>
+                <div className="flex justify-center">
+                    <h4 className="italic text-amber-100">
+                        Relaxg : The Second
+                    </h4>
                 </div>
-                <button type="submit">Se connecter</button>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-            </form>
+            </div>
         </div>
     );
 }

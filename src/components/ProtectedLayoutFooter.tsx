@@ -2,7 +2,7 @@ import React from "react";
 
 export const Footer: React.FC = () => {
     return (
-        <footer>
+        <footer className="border border-gray-200 rounded-md">
             <p className="text-center">Footer content</p>
         </footer>
     );
