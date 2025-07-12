@@ -30,11 +30,11 @@ const processFailedQueue = (
     error: AxiosError | null,
     token: string | null = null,
 ): void => {
-    failedQueue.forEach((prom) => {
+    failedQueue.forEach((promiseActionsSet) => {
         if (error) {
-            prom.reject(error);
+            promiseActionsSet.reject(error);
         } else {
-            prom.resolve(token);
+            promiseActionsSet.resolve(token);
         }
     });
     failedQueue = [];
@@ -102,7 +102,7 @@ axiosInstance.interceptors.response.use(
                 isRefreshing = false;
                 processFailedQueue(refreshError as AxiosError | null); // Inform all pending requests of the error
                 console.error(
-                    "Impossible de rafraîchir le token, déconnexion...",
+                    "Impossible to refresh token, logging out...",
                     refreshError,
                 );
 

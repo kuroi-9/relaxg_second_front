@@ -95,8 +95,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         };
     }, []);
 
+    // Value recomputed only when user changes
     const isAuthenticated = useMemo(() => !!user, [user]);
 
+    // Value recomputed only when user, loading, isAuthenticated changes
+    // (or the ref of handleLogin and handleLogout)
     const contextValue = useMemo<AuthContextType>(
         () => ({
             user,
