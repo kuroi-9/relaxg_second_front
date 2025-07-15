@@ -67,6 +67,14 @@ h1 {
 .primary-button:hover {
     border-color: #646cff;
 }
+
+.active-link,
+.active-link:hover {
+    border-color: #fef3c6;
+    color: #fef3c6;
+    border-radius: 5px;
+}
+
 .primary-button:focus,
 .primary-button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;

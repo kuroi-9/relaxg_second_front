@@ -1,7 +1,6 @@
-import { useAuth } from "../../hooks/useAuth";
-import DashboardTopNav from "../../components/dashboard/DashboardTopNav";
+import { useAuth } from "../../../hooks/useAuth";
 
-function DashboardPage() {
+export default function JobsPage() {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
@@ -14,10 +13,8 @@ function DashboardPage() {
     }
 
     return (
-        <div className="w-full">
-            <DashboardTopNav />
+        <div className="grid ml-2 mr-2 border border-gray-200 rounded-md">
+            <h1>Jobs</h1>
         </div>
     );
 }
-
-export default DashboardPage;
