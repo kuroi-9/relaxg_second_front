@@ -1,15 +1,11 @@
+import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
 import { useAuth } from "../../../hooks/useAuth";
 
 export default function JobsPage() {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
-        return (
-            <p>
-                Vous n'êtes pas connecté. Veuillez vous rendre sur la page de
-                connexion.
-            </p>
-        );
+        return <JokerAccessForbidden />;
     }
 
     return (

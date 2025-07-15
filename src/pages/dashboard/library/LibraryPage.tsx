@@ -1,15 +1,11 @@
 import { useAuth } from "../../../hooks/useAuth";
+import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
 
 export default function LibraryPage() {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
-        return (
-            <p>
-                Vous n'êtes pas connecté. Veuillez vous rendre sur la page de
-                connexion.
-            </p>
-        );
+        return <JokerAccessForbidden />;
     }
 
     return (

@@ -2,17 +2,14 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Footer from "../components/ProtectedLayoutFooter";
 import { LayoutLeftNav } from "../components/ProtectedLayoutLeftNav";
+import LoadingComponent from "../components/auth/LoadingComponent";
 
 // Private (protected) layout
 const PrivateMainLayout: React.FC = () => {
     const { isAuthenticated, loading } = useAuth(); // No need for logout here, it's handled in ProtectedPageContent
 
     if (loading) {
-        return (
-            <div style={{ textAlign: "center", padding: "50px" }}>
-                Chargement de l'authentification...
-            </div>
-        );
+        return <LoadingComponent />;
     }
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;

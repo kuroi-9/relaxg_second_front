@@ -1,15 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import LoadingComponent from "../components/auth/LoadingComponent";
 
 const PublicAuthLayout: React.FC = () => {
     const { isAuthenticated, loading } = useAuth();
 
     if (loading) {
-        return (
-            <div style={{ textAlign: "center", padding: "50px" }}>
-                Loading...
-            </div>
-        );
+        return <LoadingComponent />;
     }
     if (isAuthenticated) {
         return <Navigate to="/dashboard" replace />; // Redirect if already logged in
