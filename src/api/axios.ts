@@ -9,7 +9,8 @@ import Cookies from "js-cookie";
 import type { ExtendedAxiosRequestConfig } from "../interfaces";
 
 const API_BASE_URL: string =
-    import.meta.env.VITE_API_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_URL_DEV_OVER_NETWORK ||
+    import.meta.env.VITE_API_URL;
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
