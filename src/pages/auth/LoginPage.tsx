@@ -27,37 +27,31 @@ function LoginPage() {
     };
 
     return (
-        <div className="h-screen grid items-center">
-            <div className="grid grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
-                <h2 className="mid-heading">Connexion</h2>
-                <form
-                    onSubmit={handleSubmit}
-                    className="grid grid-rows-[1fr_1fr_1fr] gap-2 w-1/4"
-                >
-                    <div className="grid-form-input">
-                        <div className="flex items-center">
-                            <label htmlFor="username" className="text-start">
-                                Identifiant
-                            </label>
-                        </div>
+        <div className="grid grid-cols-1 grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
+            <h2 className="mid-heading">Connexion</h2>
+            <form
+                onSubmit={handleSubmit}
+                className="grid grid-cols-[min(30rem,_100%)] grid-rows-[1fr_1fr_1fr] gap-2 justify-center"
+            >
+                <div className="grid-form-input">
+                    <div className="grid grid-cols-1 items-center justify-center">
                         <input
                             id="username"
-                            type="text"
+                            type="email"
+                            placeholder="Email"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            className="border-b outline-none"
+                            className="border-b outline-none h-10"
                         />
                     </div>
-                    <div className="grid-form-input">
-                        <div className="flex items-center">
-                            <label htmlFor="password" className="text-start">
-                                Mot de passe
-                            </label>
-                        </div>
+                </div>
+                <div className="grid-form-input">
+                    <div className="grid grid-cols-1 items-center justify-center">
                         <input
                             id="password"
                             type="password"
+                            placeholder="Password"
                             value={password}
                             onChange={(e) =>
                                 setPassword(
@@ -67,23 +61,21 @@ function LoginPage() {
                                 )
                             } // Filtering spaces as the user types
                             required
-                            className="border-b outline-none"
+                            className="border-b outline-none h-10"
                         />
                     </div>
-                    <button type="submit" className="primary-button">
-                        Se connecter
-                    </button>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-                </form>
-                <h4 className="text-center">
-                    Pas encore de compte ?{" "}
-                    <Link to="/register">Inscrivez-vous</Link>
-                </h4>
-                <div className="flex justify-center">
-                    <h4 className="italic text-amber-100">
-                        Relaxg : The Second
-                    </h4>
                 </div>
+                <button type="submit" className="primary-button">
+                    Se connecter
+                </button>
+                {error && <p style={{ color: "red" }}>{error}</p>}
+            </form>
+            <h4 className="text-center">
+                Pas encore de compte ?{" "}
+                <Link to="/register">Inscrivez-vous</Link>
+            </h4>
+            <div className="flex justify-center">
+                <h4 className="italic text-amber-100">Relaxg : The Second</h4>
             </div>
         </div>
     );
