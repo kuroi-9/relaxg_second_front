@@ -36,7 +36,22 @@ const AuthService = {
             );
             throw error;
         });
-        return response.data;
+
+        if (
+            response.data &&
+            typeof response.data === "object" &&
+            "id" in response.data &&
+            "username" in response.data &&
+            "email" in response.data &&
+            "first_name" in response.data &&
+            "last_name" in response.data &&
+            "scan_directory" in response.data
+        ) {
+            console.log(response.data);
+            return response.data;
+        } else {
+            throw new Error("Invalid user data received");
+        }
     },
 };
 

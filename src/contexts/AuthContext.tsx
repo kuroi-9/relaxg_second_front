@@ -23,8 +23,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         async (username: string, password: string): Promise<boolean> => {
             try {
                 const userData = await AuthService.login(username, password);
-                setUser(userData);
-                return true;
+                if (userData) {
+                    setUser(userData);
+                    return true;
+                } else {
+                    setUser(null);
+                    throw new Error("User received is null");
+                }
             } catch (error: unknown) {
                 setUser(null);
                 throw error;
