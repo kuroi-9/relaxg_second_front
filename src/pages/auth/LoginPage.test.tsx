@@ -42,8 +42,8 @@ describe("Login", () => {
         renderWithRouter(<LoginPage />);
 
         expect(screen.getByText("Connexion")).toBeTruthy();
-        expect(screen.getByLabelText(/identifiant/i)).toBeTruthy();
-        expect(screen.getByLabelText(/mot de passe/i)).toBeTruthy();
+        expect(screen.getAllByPlaceholderText(/Email/i)).toBeTruthy();
+        expect(screen.getByPlaceholderText(/Password/i)).toBeTruthy();
         expect(
             screen.getByRole("button", { name: /se connecter/i }),
         ).toBeTruthy();
@@ -52,19 +52,21 @@ describe("Login", () => {
     it("should update username input value", () => {
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(
-            /identifiant/i,
+        const usernameInput = screen.getByPlaceholderText(
+            /Email/i,
         ) as HTMLInputElement;
-        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(usernameInput, {
+            target: { value: "testuser@relaxg.app" },
+        });
 
-        expect(usernameInput.value).toBe("testuser");
+        expect(usernameInput.value).toBe("testuser@relaxg.app");
     });
 
     it("should update password input value", () => {
         renderWithRouter(<LoginPage />);
 
-        const passwordInput = screen.getByLabelText(
-            /mot de passe/i,
+        const passwordInput = screen.getByPlaceholderText(
+            /Password/i,
         ) as HTMLInputElement;
         fireEvent.change(passwordInput, { target: { value: "testpassword" } });
 
@@ -74,8 +76,8 @@ describe("Login", () => {
     it("should filter out spaces from password input", () => {
         renderWithRouter(<LoginPage />);
 
-        const passwordInput = screen.getByLabelText(
-            /mot de passe/i,
+        const passwordInput = screen.getByPlaceholderText(
+            /Password/i,
         ) as HTMLInputElement;
         fireEvent.change(passwordInput, { target: { value: "test password" } });
 
@@ -87,13 +89,15 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/identifiant/i);
-        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const usernameInput = screen.getByPlaceholderText(/Email/i);
+        const passwordInput = screen.getByPlaceholderText(/Password/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
         });
 
-        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(usernameInput, {
+            target: { value: "testuser@relaxg.app" },
+        });
         fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
         fireEvent.click(loginButton);
 
@@ -104,7 +108,10 @@ describe("Login", () => {
                 ),
             ).toBeTruthy();
         });
-        expect(mockLogin).toHaveBeenCalledWith("testuser", "wrongpassword");
+        expect(mockLogin).toHaveBeenCalledWith(
+            "testuser@relaxg.app",
+            "wrongpassword",
+        );
     });
 
     it("should navigate to dashboard on successful login", async () => {
@@ -112,13 +119,15 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/identifiant/i);
-        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const usernameInput = screen.getByPlaceholderText(/Email/i);
+        const passwordInput = screen.getByPlaceholderText(/Password/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
         });
 
-        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(usernameInput, {
+            target: { value: "testuser@relaxg.app" },
+        });
         fireEvent.change(passwordInput, {
             target: { value: "correctpassword" },
         });
@@ -127,7 +136,10 @@ describe("Login", () => {
         await waitFor(() => {
             expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
         });
-        expect(mockLogin).toHaveBeenCalledWith("testuser", "correctpassword");
+        expect(mockLogin).toHaveBeenCalledWith(
+            "testuser@relaxg.app",
+            "correctpassword",
+        );
     });
 
     it("should clear error message on new submit attempt", async () => {
@@ -135,14 +147,16 @@ describe("Login", () => {
 
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/identifiant/i);
-        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const usernameInput = screen.getByPlaceholderText(/Email/i);
+        const passwordInput = screen.getByPlaceholderText(/Password/i);
         const loginButton = screen.getByRole("button", {
             name: /se connecter/i,
         });
 
         // First failed attempt
-        fireEvent.change(usernameInput, { target: { value: "testuser" } });
+        fireEvent.change(usernameInput, {
+            target: { value: "testuser@relaxg.app" },
+        });
         fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
         fireEvent.click(loginButton);
 
@@ -173,8 +187,8 @@ describe("Login", () => {
     it("should have required attributes on inputs", () => {
         renderWithRouter(<LoginPage />);
 
-        const usernameInput = screen.getByLabelText(/identifiant/i);
-        const passwordInput = screen.getByLabelText(/mot de passe/i);
+        const usernameInput = screen.getByPlaceholderText(/Email/i);
+        const passwordInput = screen.getByPlaceholderText(/Password/i);
 
         expect(usernameInput.hasAttribute("required")).toBe(true);
         expect(passwordInput.hasAttribute("required")).toBe(true);
