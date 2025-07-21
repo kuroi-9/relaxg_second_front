@@ -73,6 +73,7 @@ h1 {
 .active-link:hover {
     border-color: #fef3c6;
     color: #fef3c6;
+    -webkit-text-stroke: 0.5px #1a1a1a;
     border-radius: 5px;
 }
 

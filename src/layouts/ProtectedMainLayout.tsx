@@ -6,10 +6,12 @@ import LoadingComponent from "../components/auth/LoadingComponent";
 import DashboardTopTabs from "../components/dashboard/DashboardTopTabs";
 import JobsTab from "../pages/dashboard/jobs/JobsTab";
 import LibraryTab from "../pages/dashboard/library/LibraryTab";
+import { useState } from "react";
 
 // Private (protected) layout
 const PrivateMainLayout: React.FC = () => {
     const { isAuthenticated, loading } = useAuth(); // No need for logout here, it's handled in ProtectedPageContent
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
     if (loading) {
         return <LoadingComponent />;
@@ -18,13 +20,43 @@ const PrivateMainLayout: React.FC = () => {
         return <Navigate to="/login" replace />;
     }
 
+    const toggleVisibilityParent = (): void => {
+        const mainContent = document.getElementById("main-content");
+        const mainContainer = document.getElementById("main-container");
+
+        if (mainContent && mainContainer) {
+            if (isFullScreen) {
+                mainContent.className =
+                    "grid grid-rows-1 grid-cols-[10rem_1fr] gap-2 h-full";
+                mainContainer.className =
+                    "grid grid-rows-[1fr_5rem] gap-2 h-full";
+            } else {
+                mainContent.className =
+                    "grid grid-rows-1 grid-cols-[min-content_1fr] gap-2 h-full";
+                mainContainer.className = "grid grid-rows-1 gap-2 h-full";
+            }
+        }
+        setIsFullScreen(!isFullScreen);
+    };
+
     return (
         <>
-            <div className="grid grid-rows-[1fr_5rem] gap-2 h-full">
-                <div className="grid grid-cols-[10rem_1fr] gap-2 h-full">
+            <div
+                id="main-container"
+                className="grid grid-rows-[1fr_5rem] gap-2 h-full"
+            >
+                <div
+                    id="main-content"
+                    className="grid grid-rows-1 grid-cols-[10rem_1fr] gap-2 h-full"
+                >
                     {/* No header/footer to keep it ultra-minimal, just the Outlet */}
-                    <LayoutLeftNav></LayoutLeftNav>
-                    <div className="w-full border border-gray-200 rounded-md">
+                    <LayoutLeftNav
+                        toggleVisibilityParent={toggleVisibilityParent}
+                    ></LayoutLeftNav>
+                    <div
+                        className="w-full border rounded-md"
+                        style={{ borderColor: "var(--background-color" }}
+                    >
                         <DashboardTopTabs>
                             <div aria-label="Jobs">
                                 <JobsTab />
@@ -35,7 +67,7 @@ const PrivateMainLayout: React.FC = () => {
                         </DashboardTopTabs>
                     </div>
                 </div>
-                <Footer></Footer>
+                {!isFullScreen && <Footer></Footer>}
             </div>
         </>
     );
