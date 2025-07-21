@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import * as useAuthHook from "../../hooks/useAuth";
 import LoginPage from "./LoginPage";
+import { AxiosError, type AxiosResponse } from "axios";
 
 // Mock the useAuth hook
 vi.mock("../../hooks/useAuth", () => ({
@@ -85,7 +86,12 @@ describe("Login", () => {
     });
 
     it("should display error message when login fails", async () => {
-        mockLogin.mockRejectedValueOnce(new Error("Invalid credentials"));
+        mockLogin.mockRejectedValueOnce(
+            new AxiosError(undefined, undefined, undefined, undefined, {
+                statusText: "Unauthorized",
+                status: 401,
+            } as AxiosResponse),
+        );
 
         renderWithRouter(<LoginPage />);
 
@@ -103,9 +109,7 @@ describe("Login", () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText(
-                    "Login failed. Please check your credentials.",
-                ),
+                screen.getByText("Unauthorized, please check your credentials"),
             ).toBeTruthy();
         });
         expect(mockLogin).toHaveBeenCalledWith(
@@ -143,7 +147,12 @@ describe("Login", () => {
     });
 
     it("should clear error message on new submit attempt", async () => {
-        mockLogin.mockRejectedValueOnce(new Error("Invalid credentials"));
+        mockLogin.mockRejectedValueOnce(
+            new AxiosError(undefined, undefined, undefined, undefined, {
+                statusText: "Unauthorized",
+                status: 401,
+            } as AxiosResponse),
+        );
 
         renderWithRouter(<LoginPage />);
 
@@ -162,9 +171,7 @@ describe("Login", () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText(
-                    "Login failed. Please check your credentials.",
-                ),
+                screen.getByText("Unauthorized, please check your credentials"),
             ).toBeTruthy();
         });
 

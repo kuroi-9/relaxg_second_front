@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../index.css";
 import "./LoginPage.style.css";
 import { Link } from "react-router-dom";
+import { AxiosError } from "axios";
 
 function LoginPage() {
     const [username, setUsername] = useState<string>("");
@@ -20,8 +21,25 @@ function LoginPage() {
             console.log(response);
             navigate("/dashboard");
         } catch (err) {
-            const errorMessage = "Login failed. Please check your credentials.";
-            setError(errorMessage);
+            const errorMessage = () => {
+                if (err instanceof AxiosError) {
+                    if (err.response && err.response.status === 401) {
+                        // We only target 401 errors, not other BAD_REQUEST errors
+                        return (
+                            err.response.statusText +
+                            ", please check your credentials"
+                        );
+                    } else if (err.code === "ECONNABORTED") {
+                        return "Connection timed out";
+                    } else if (err.code === "ERR_NETWORK") {
+                        return "Please check your internet connection and the backend status";
+                    } else {
+                        return "An unknown error occurred";
+                    }
+                }
+                return "An unknown error occurred";
+            };
+            setError(errorMessage());
             console.error("Login component error:", err);
         }
     };
