@@ -20,3 +20,30 @@ export interface AuthContextType {
     login: (username: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
 }
+
+export interface Book {
+    id: number;
+    title: string;
+    author: string;
+    isbn: string | null;
+    series: Bookserie | null;
+    filePath: string;
+    status: string;
+}
+
+export interface Bookserie {
+    id: number;
+    title: string;
+    directory_path: string;
+    description: string | null;
+    cover_image: string | null;
+}
+
+/**
+ * Interface for the library context
+ */
+export interface LibraryContextType {
+    books: Book[];
+    bookseries: Bookserie[];
+    loading: boolean;
+}

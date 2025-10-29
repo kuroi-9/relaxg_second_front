@@ -7,6 +7,7 @@ import DashboardTopTabs from "../components/dashboard/DashboardTopTabs";
 import JobsTab from "../pages/dashboard/jobs/JobsTab";
 import LibraryTab from "../pages/dashboard/library/LibraryTab";
 import { useState } from "react";
+import LibraryProvider from "../contexts/LibraryContext";
 
 // Private (protected) layout
 const PrivateMainLayout: React.FC = () => {
@@ -62,7 +63,9 @@ const PrivateMainLayout: React.FC = () => {
                                 <JobsTab />
                             </div>
                             <div aria-label="Library">
-                                <LibraryTab />
+                                <LibraryProvider>
+                                    <LibraryTab />
+                                </LibraryProvider>
                             </div>
                         </DashboardTopTabs>
                     </div>
