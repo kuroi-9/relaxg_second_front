@@ -33,16 +33,16 @@ export const LayoutLeftNav: React.FC<{
                 Hide
             </button>
             <nav
-                className="grid grid-flow-rows grid-rows-[0.7rem, 0.7rem, 0.7rem, 1fr] gap-2 h-full border p-2"
+                className="grid grid-flow-rows grid-rows-[0.7rem, 0.7rem, 0.7rem, 1fr] gap-2 h-full border border-t-0 p-2"
                 style={{ borderColor: "var(--background-color" }}
             >
-                <Link to="/dashboard" className="secondary-button">
+                <Link to="/dashboard" className="borderless-primary-button">
                     Dashboard
                 </Link>
-                <Link to="/queues" className="secondary-button">
+                <Link to="/queues" className="borderless-primary-button">
                     Queues
                 </Link>
-                <Link to="/settings" className="secondary-button">
+                <Link to="/settings" className="borderless-primary-button">
                     Settings
                 </Link>
                 <button className="primary-button" onClick={logout}>

@@ -11,10 +11,12 @@ const Tab: React.FC<TabProps> = ({ activeTab, label, onClick }) => {
         onClick(label);
     };
 
-    let className = "primary-button";
+    let className = "";
 
     if (activeTab === label) {
-        className += " active-link";
+        className += " primary-button";
+    } else {
+        className += " borderless-primary-button";
     }
 
     return (

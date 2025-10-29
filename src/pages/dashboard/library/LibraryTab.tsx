@@ -13,15 +13,25 @@ export default function LibraryTab() {
     }
 
     return (
-        <div
-            className="h-full border"
-            style={{ borderColor: "var(--background-color)" }}
-        >
+        <div className="h-full border" style={{ borderColor: "gray" }}>
             {bookseries.length > 0 ? (
-                <div className="grid">
+                <div className="grid grid-cols-5 gap-2 p-2">
                     {bookseries.map((bookserie) => (
-                        <div key={bookserie.id}>
+                        <div key={bookserie.id} className="border p-2">
+                            {bookserie.cover_image && (
+                                <img
+                                    src={bookserie.cover_image}
+                                    alt={`${bookserie.title} cover`}
+                                    className="w-full h-48 object-cover mb-2"
+                                />
+                            )}
+                            <hr />
                             <h2>{bookserie.title}</h2>
+                            {bookserie.description && (
+                                <p className="text-sm text-gray-600">
+                                    {bookserie.description}
+                                </p>
+                            )}
                         </div>
                     ))}
                 </div>
