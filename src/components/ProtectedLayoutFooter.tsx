@@ -3,7 +3,7 @@ import React from "react";
 export const Footer: React.FC = () => {
     return (
         <footer
-            className="border rounded-md"
+            className="border"
             style={{ borderColor: "var(--background-color" }}
         >
             <p className="text-center">Footer content</p>

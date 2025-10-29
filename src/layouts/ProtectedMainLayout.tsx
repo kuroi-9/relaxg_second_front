@@ -54,7 +54,7 @@ const PrivateMainLayout: React.FC = () => {
                         toggleVisibilityParent={toggleVisibilityParent}
                     ></LayoutLeftNav>
                     <div
-                        className="w-full border rounded-md"
+                        className="w-full border"
                         style={{ borderColor: "var(--background-color" }}
                     >
                         <DashboardTopTabs>

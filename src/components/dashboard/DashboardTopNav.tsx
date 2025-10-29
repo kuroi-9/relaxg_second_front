@@ -9,7 +9,7 @@ export const DashboardTopNav: React.FC = () => {
     };
 
     return (
-        <nav className="grid grid-cols-2 gap-2 ml-2 mr-2 border border-gray-200 rounded-md">
+        <nav className="grid grid-cols-2 gap-2 ml-2 mr-2 border border-gray-200">
             <Link
                 className={getLinkClasses("/dashboard/jobs")}
                 to="/dashboard/jobs"

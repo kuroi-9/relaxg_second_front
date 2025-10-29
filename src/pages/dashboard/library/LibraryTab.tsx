@@ -12,7 +12,7 @@ export default function LibraryTab() {
 
     return (
         <div
-            className="grid h-full border rounded-md"
+            className="grid h-full border"
             style={{ borderColor: "var(--background-color)" }}
         >
             <h1>Library</h1>

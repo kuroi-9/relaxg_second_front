@@ -18,7 +18,6 @@ export const LayoutLeftNav: React.FC<{
             <button
                 className="primary-button border"
                 onClick={toggleVisibility}
-                style={{ borderColor: "var(--background-color)" }}
             >
                 &gt;
             </button>
@@ -30,17 +29,22 @@ export const LayoutLeftNav: React.FC<{
             <button
                 className="primary-button w-full border"
                 onClick={toggleVisibility}
-                style={{ borderColor: "var(--background-color)" }}
             >
                 Hide
             </button>
             <nav
-                className="grid grid-flow-rows grid-rows-[0.7rem, 0.7rem, 0.7rem, 1fr] gap-6 h-full border rounded-md"
+                className="grid grid-flow-rows grid-rows-[0.7rem, 0.7rem, 0.7rem, 1fr] gap-2 h-full border p-2"
                 style={{ borderColor: "var(--background-color" }}
             >
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/queues">Queues</Link>
-                <Link to="/settings">Settings</Link>
+                <Link to="/dashboard" className="secondary-button">
+                    Dashboard
+                </Link>
+                <Link to="/queues" className="secondary-button">
+                    Queues
+                </Link>
+                <Link to="/settings" className="secondary-button">
+                    Settings
+                </Link>
                 <button className="primary-button" onClick={logout}>
                     Logout
                 </button>

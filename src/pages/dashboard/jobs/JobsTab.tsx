@@ -12,7 +12,7 @@ export default function JobsTab() {
 
     return (
         <div
-            className="grid h-full border rounded-md"
+            className="grid h-full border"
             style={{ borderColor: "var(--background-color" }}
         >
             <h1>Jobs</h1>
