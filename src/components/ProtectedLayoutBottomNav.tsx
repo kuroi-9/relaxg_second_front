@@ -41,25 +41,28 @@ export const LayoutBottomNav: React.FC<{
                 Hide
             </button>*/}
             <nav
-                className="grid grid-flow-col justify-center gap-2 w-full p-2"
+                className="grid grid-flow-col md:justify-center gap-2 p-2 overflow-x-scroll"
                 style={{ borderColor: "var(--background)" }}
             >
                 <Link
                     to="/dashboard"
-                    className="borderless-primary-button w-min"
+                    className="borderless-primary-button md:w-min"
                 >
                     Dashboard
                 </Link>
-                <Link to="/queues" className="borderless-primary-button w-min">
+                <Link
+                    to="/queues"
+                    className="borderless-primary-button md:w-min"
+                >
                     Queues
                 </Link>
                 <Link
                     to="/settings"
-                    className="borderless-primary-button w-min"
+                    className="borderless-primary-button md:w-min"
                 >
                     Settings
                 </Link>
-                <button className="primary-button w-min" onClick={logout}>
+                <button className="primary-button md:w-min" onClick={logout}>
                     Logout
                 </button>
             </nav>
