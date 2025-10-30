@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { type AuthContextType } from "../types"; // Importe tes types
 import AuthContext from "../contexts/AuthContextDefinition";
+import { type AuthContextType } from "../types";
 
-// Custom hook to consume the context with precise typing
+/**
+ * Custom hook to consume the context with precise typing
+ */
 export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
     if (!context) {

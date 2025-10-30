@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-export const LayoutLeftNav: React.FC<{
+export const LayoutBottomNav: React.FC<{
     toggleVisibilityParent: () => void;
 }> = ({ toggleVisibilityParent }) => {
     const { logout } = useAuth();
@@ -25,27 +25,41 @@ export const LayoutLeftNav: React.FC<{
     }
 
     return (
-        <div className="grid grid-rows-[3rem_1fr] gap-2 h-full">
-            <button
+        <div
+            className="grid grid-cols-[1fr] w-full z-10 border-t"
+            style={{
+                position: "fixed",
+                left: 0,
+                bottom: 0,
+                backgroundColor: "var(--background)",
+            }}
+        >
+            {/*<button
                 className="primary-button w-full border"
                 onClick={toggleVisibility}
             >
                 Hide
-            </button>
+            </button>*/}
             <nav
-                className="grid grid-flow-rows grid-rows-[0.7rem, 0.7rem, 0.7rem, 1fr] gap-2 h-full border border-t-0 p-2"
-                style={{ borderColor: "var(--background-color" }}
+                className="grid grid-flow-col justify-center gap-2 w-full p-2"
+                style={{ borderColor: "var(--background)" }}
             >
-                <Link to="/dashboard" className="borderless-primary-button">
+                <Link
+                    to="/dashboard"
+                    className="borderless-primary-button w-min"
+                >
                     Dashboard
                 </Link>
-                <Link to="/queues" className="borderless-primary-button">
+                <Link to="/queues" className="borderless-primary-button w-min">
                     Queues
                 </Link>
-                <Link to="/settings" className="borderless-primary-button">
+                <Link
+                    to="/settings"
+                    className="borderless-primary-button w-min"
+                >
                     Settings
                 </Link>
-                <button className="primary-button" onClick={logout}>
+                <button className="primary-button w-min" onClick={logout}>
                     Logout
                 </button>
             </nav>

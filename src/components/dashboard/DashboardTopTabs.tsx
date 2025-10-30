@@ -35,8 +35,22 @@ class DashboardTopTabs extends Component<TabsProps, TabsState> {
         } = this;
 
         return (
-            <div className="tabs p-2 h-full grid grid-rows-[auto_1fr] gap-2">
-                <ol className="tab-list grid grid-cols-2 gap-2">
+            <div
+                className="tabs p-2 h-full grid grid-rows-[auto_1fr] gap-2"
+                style={{
+                    border: "1px solid gray",
+                }}
+            >
+                <ol
+                    className="tab-list w-full grid grid-cols-2 gap-2 border-b p-2"
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        zIndex: 10,
+                        backgroundColor: "var(--background)",
+                    }}
+                >
                     {children.map((child) => {
                         const { ["aria-label"]: label } = child.props;
 

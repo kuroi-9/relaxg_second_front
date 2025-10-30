@@ -13,7 +13,7 @@ export default function JobsTab() {
     return (
         <div
             className="grid h-full border"
-            style={{ borderColor: "var(--background-color" }}
+            style={{ borderColor: "var(--background)" }}
         >
             <h1>Jobs</h1>
         </div>

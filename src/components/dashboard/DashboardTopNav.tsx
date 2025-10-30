@@ -13,6 +13,7 @@ export const DashboardTopNav: React.FC = () => {
             <Link
                 className={getLinkClasses("/dashboard/jobs")}
                 to="/dashboard/jobs"
+                style={{ position: "fixed", top: "0" }}
             >
                 Jobs
             </Link>

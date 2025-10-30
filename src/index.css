@@ -49,7 +49,7 @@ body.modal-open {
     padding: 0.75rem;
     border-radius: 0;
     border: 1px dotted gray;
-    background-color: transparent;
+    background-color: var(--background);
     color: var(--foreground);
     min-height: 3.5rem;
     display: flex;
