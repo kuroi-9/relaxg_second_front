@@ -45,7 +45,7 @@ const PrivateMainLayout: React.FC = () => {
             <div
                 id="main-container"
                 className="grid grid-rows-[1fr_10rem] gap-2 h-full"
-                style={{ marginTop: "5rem" }}
+                style={{ marginTop: "4rem" }}
             >
                 <div
                     id="main-content"

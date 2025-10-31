@@ -5,6 +5,7 @@ import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden"
 import { useAuth } from "../../../hooks/useAuth";
 import { useLibrary } from "../../../hooks/useLibrary";
 import useWindowSize from "../../../hooks/useWindowSize";
+import "../../../index.css";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -62,8 +63,8 @@ export default function LibraryTab() {
                     bookseries.map((bookserie) => (
                         <div
                             key={bookserie.id}
-                            className="border bookseries-grid-item mb-2.5"
-                            style={{ width: "250px" }}
+                            className="border bookseries-grid-item mb-2.5 w-2xs md:w-44"
+                            style={{}}
                         >
                             {bookserie.cover_image && (
                                 <img

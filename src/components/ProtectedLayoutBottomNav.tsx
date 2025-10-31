@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import "../index.css";
 
 export const LayoutBottomNav: React.FC<{
     toggleVisibilityParent: () => void;
@@ -41,7 +42,7 @@ export const LayoutBottomNav: React.FC<{
                 Hide
             </button>*/}
             <nav
-                className="grid grid-flow-col md:justify-center gap-2 p-2 overflow-x-scroll"
+                className="bottom-nav grid grid-flow-col md:justify-center gap-2 p-2 overflow-x-auto"
                 style={{ borderColor: "var(--background)" }}
             >
                 <Link
@@ -63,7 +64,7 @@ export const LayoutBottomNav: React.FC<{
                     Settings
                 </Link>
                 <button className="primary-button md:w-min" onClick={logout}>
-                    Logout
+                    Exit
                 </button>
             </nav>
         </div>
