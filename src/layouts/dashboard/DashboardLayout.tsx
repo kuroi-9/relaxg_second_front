@@ -18,7 +18,7 @@ const DashboardLayout: React.FC = () => {
 
     return (
         <>
-            <div className="grid grid-rows-[auto_1fr] gap-2 pt-2 pb-2 h-full">
+            <div className="grid grid-rows-[auto_1fr] gap-2 pt-2 pb-2 h-full z-50">
                 <DashboardTopNav />
                 <Outlet />
             </div>

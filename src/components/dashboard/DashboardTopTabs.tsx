@@ -19,12 +19,21 @@ class DashboardTopTabs extends Component<TabsProps, TabsState> {
         super(props);
 
         this.state = {
-            activeTab: this.props.children[0].props["aria-label"],
+            activeTab:
+                new URLSearchParams(window.location.search)
+                    .get("activeTab")
+                    ?.toLocaleLowerCase() ||
+                this.props.children[0].props["aria-label"].toLocaleLowerCase(),
         };
     }
 
     onClickTabItem = (tab: string) => {
-        this.setState({ activeTab: tab });
+        this.setState({ activeTab: tab.toLocaleLowerCase() });
+        window.history.replaceState(
+            null,
+            "",
+            `?activeTab=${tab.toLocaleLowerCase()}`,
+        );
     };
 
     render() {
@@ -47,7 +56,7 @@ class DashboardTopTabs extends Component<TabsProps, TabsState> {
                         position: "fixed",
                         top: 0,
                         left: 0,
-                        zIndex: 10,
+                        zIndex: 50,
                         backgroundColor: "var(--background)",
                     }}
                 >
@@ -66,7 +75,10 @@ class DashboardTopTabs extends Component<TabsProps, TabsState> {
                 </ol>
                 <div className="tab-content h-full">
                     {children.map((child) => {
-                        if (child.props["aria-label"] !== activeTab)
+                        if (
+                            child.props["aria-label"].toLocaleLowerCase() !==
+                            activeTab.toLocaleLowerCase()
+                        )
                             return undefined;
                         return child.props.children;
                     })}

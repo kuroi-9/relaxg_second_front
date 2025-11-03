@@ -13,7 +13,7 @@ const Tab: React.FC<TabProps> = ({ activeTab, label, onClick }) => {
 
     let className = "";
 
-    if (activeTab === label) {
+    if (activeTab.toLocaleLowerCase() === label.toLocaleLowerCase()) {
         className += " primary-button";
     } else {
         className += " borderless-primary-button";

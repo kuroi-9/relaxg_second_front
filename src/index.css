@@ -37,7 +37,7 @@ body.modal-open {
     border: 1px solid var(--foreground);
     background-color: #171717;
     color: white;
-    min-height: 1.5rem;
+    min-height: 41.8px;
     height: min-content;
     display: flex;
     flex-direction: row;
@@ -91,8 +91,13 @@ body.modal-open {
 .secondary-button:active,
 .primary-input:focus,
 .nav-link:active,
-.borderless-primary-button:active {
+.borderless-primary-button:active,
+.bookseries-grid-item:active {
     outline: 5px solid #fcd34d;
+}
+
+.bookseries-grid-item {
+    -webkit-user-select: none;
 }
 
 .animate {
