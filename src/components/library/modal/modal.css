@@ -47,7 +47,7 @@
 @media screen and (max-width: 851px) {
     .modalContainer .body {
         flex-direction: column;
-        overflow: auto;
+        overflow: scroll;
         align-items: center;
         justify-content: initial;
     }
@@ -57,14 +57,12 @@
         max-width: 75%;
         max-height: 90%;
     }
-
-    .bookseries-books {
-        overflow: initial;
-    }
 }
 
-.bookseries-books {
-    overflow: scroll;
+@media screen and (min-width: 852px) {
+    .bookseries-books {
+        overflow: scroll;
+    }
 }
 
 .modalContainer .body::-webkit-scrollbar {
