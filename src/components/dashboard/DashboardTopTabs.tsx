@@ -44,12 +44,7 @@ class DashboardTopTabs extends Component<TabsProps, TabsState> {
         } = this;
 
         return (
-            <div
-                className="tabs p-2 h-full grid grid-rows-[auto_1fr] gap-2"
-                style={{
-                    border: "1px solid gray",
-                }}
-            >
+            <div className="tabs p-2 h-full grid grid-rows-[auto_1fr] gap-2">
                 <ol
                     className="tab-list w-full grid grid-cols-2 gap-2 border-b p-2"
                     style={{

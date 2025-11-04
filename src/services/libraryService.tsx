@@ -29,15 +29,6 @@ const LibraryService = {
             throw error;
         }
     },
-    async getBookById(id: string): Promise<Bookserie | null> {
-        try {
-            const response = await axios.get(`/library/books/${id}`);
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching book by ID:", error);
-            throw error;
-        }
-    },
 };
 
 export default LibraryService;
