@@ -14,7 +14,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export default function LibraryTab() {
     const { isAuthenticated } = useAuth();
-    const { bookseries } = useLibrary();
+    const { bookseries, loading, isLibraryEmpty } = useLibrary();
     const dimensions = useWindowSize();
     const masonry = useRef<Masonry | null>(null);
     const [selectedBookseries, setSelectedBookseries] =
@@ -102,17 +102,27 @@ export default function LibraryTab() {
                 // to trigger the layout update when window dimensions change, we need to subtract 30 from the width hooked
                 style={{ margin: "0 auto", maxWidth: dimensions[0] - 30 }}
             >
-                {bookseries.length > 0 ? (
-                    bookseries.map((bookserie) => (
-                        <BookserieGridItem
-                            key={bookserie.id}
-                            bookserie={bookserie}
-                            setSelectedBookseries={() =>
-                                setSelectedBookseries(bookserie)
-                            }
-                            VITE_API_URL={VITE_API_URL}
-                        />
-                    ))
+                {loading ? (
+                    <div className="text-center p-4">
+                        <p>Loading...</p>
+                    </div>
+                ) : !isLibraryEmpty ? (
+                    bookseries.length === 0 ? (
+                        <div className="text-center p-4">
+                            <p>Finalizing...</p>
+                        </div>
+                    ) : (
+                        bookseries.map((bookserie) => (
+                            <BookserieGridItem
+                                key={bookserie.id}
+                                bookserie={bookserie}
+                                setSelectedBookseries={() =>
+                                    setSelectedBookseries(bookserie)
+                                }
+                                VITE_API_URL={VITE_API_URL}
+                            />
+                        ))
+                    )
                 ) : (
                     <div className="text-center p-4">
                         <p>No book series found.</p>

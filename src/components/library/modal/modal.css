@@ -30,7 +30,7 @@
     padding: 0.5rem;
     color: var(--foreground);
     background-color: var(--background);
-    border-bottom: 1px solid var(--foreground);
+    border-bottom: 1px solid gray;
 }
 
 .modalContainer .body {
@@ -70,17 +70,23 @@
     }
 }
 
-.modalContainer .body::-webkit-scrollbar {
-    height: 4px;
+.modalContainer .body::-webkit-scrollbar,
+.bookseries-books::-webkit-scrollbar,
+.modalBackground::-webkit-scrollbar {
+    width: 0.5rem;
 }
 
-.modalContainer .body::-webkit-scrollbar-track {
+.modalContainer .body::-webkit-scrollbar-track,
+.bookseries-books::-webkit-scrollbar-track,
+.modalBackground::-webkit-scrollbar-track {
     border-radius: 0;
     background-color: var(--background);
     border: 1px solid #464646;
 }
 
-.modalContainer .body::-webkit-scrollbar-thumb {
+.modalContainer .body::-webkit-scrollbar-thumb,
+.bookseries-books::-webkit-scrollbar-thumb,
+.modalBackground::-webkit-scrollbar-thumb {
     border-radius: 0;
     background-color: #464646;
 }
@@ -90,6 +96,7 @@
     justify-content: center;
     align-items: center;
     padding: 0.5rem;
+    border-top: 1px solid gray;
 }
 
 /*.titleCloseBtn {

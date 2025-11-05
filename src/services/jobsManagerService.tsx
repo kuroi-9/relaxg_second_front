@@ -1,0 +1,67 @@
+import axios from "../api/axios";
+import type { Job } from "../types";
+
+const JobsManagerService = {
+    // async createJob(title: string, description: string): Promise<Job | null> {
+    //     try {
+    //         const response = await axios.post("/jobs", { title, description });
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("Error creating job:", error);
+    //         return null;
+    //     }
+    // },
+
+    /**
+     * Fetches all jobs from the server.
+     * @returns A promise that resolves to an array of jobs or null if an error occurs.
+     */
+    async getJobs(): Promise<Job[] | null> {
+        try {
+            const response = await axios.get("/jobs/all/");
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching jobs:", error);
+            return null;
+        }
+    },
+
+    // async getJobById(id: string): Promise<Job | null> {
+    //     try {
+    //         const response = await axios.get(`/jobs/${id}`);
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("Error fetching job:", error);
+    //         return null;
+    //     }
+    // },
+
+    // async updateJob(
+    //     id: string,
+    //     title: string,
+    //     description: string,
+    // ): Promise<Job | null> {
+    //     try {
+    //         const response = await axios.put(`/jobs/${id}`, {
+    //             title,
+    //             description,
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("Error updating job:", error);
+    //         return null;
+    //     }
+    // },
+
+    // async deleteJob(id: string): Promise<boolean> {
+    //     try {
+    //         await axios.delete(`/jobs/${id}`);
+    //         return true;
+    //     } catch (error) {
+    //         console.error("Error deleting job:", error);
+    //         return false;
+    //     }
+    // },
+};
+
+export default JobsManagerService;

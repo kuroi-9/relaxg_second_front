@@ -1,8 +1,10 @@
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
 import { useAuth } from "../../../hooks/useAuth";
+import { useJobsManager } from "../../../hooks/useJobsManager";
 
 export default function JobsTab() {
     const { isAuthenticated } = useAuth();
+    const { jobs, loading } = useJobsManager();
 
     if (!isAuthenticated) {
         return <JokerAccessForbidden />;
@@ -15,7 +17,11 @@ export default function JobsTab() {
             className="grid h-full border"
             style={{ borderColor: "var(--background)" }}
         >
-            <h1>Jobs</h1>
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                jobs.map((job) => <div key={job.id}>{job.title}</div>)
+            )}
         </div>
     );
 }

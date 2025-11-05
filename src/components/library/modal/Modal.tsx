@@ -64,9 +64,7 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
     return (
         <div className="modalBackground z-20">
             <div className="modalContainer z-50 w-8/12">
-                {titleContent && (
-                    <div className="title border-b">{titleContent}</div>
-                )}
+                {titleContent && <div className="title">{titleContent}</div>}
 
                 <div className="body">
                     <img
@@ -77,7 +75,7 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
                     <BookseriesBooks bookseries_title={content.title} />
                 </div>
 
-                <div className="footer border-t">
+                <div className="footer">
                     {secondaryFn && (
                         <button
                             className="primary-button"

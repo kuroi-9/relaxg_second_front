@@ -46,4 +46,24 @@ export interface LibraryContextType {
     books: Book[];
     bookseries: Bookserie[];
     loading: boolean;
+    isLibraryEmpty: boolean;
+}
+
+/**
+ * Interface for the job_manager context
+ */
+export interface JobsManagerContextType {
+    jobs: Job[];
+    loading: boolean;
+}
+
+/**
+ * Interface for the job
+ */
+export interface Job {
+    id: number;
+    title: string;
+    description: string | null;
+    status: string;
+    created_at: string;
 }

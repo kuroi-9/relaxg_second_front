@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
 import LibraryService from "../services/libraryService";
-import { type Bookserie, type Book } from "../types";
+import type { Bookserie, Book } from "../types";
 import LibraryContext from "./LibraryContextDefinition";
 
 const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
     const [books, setBooks] = useState<Book[]>([]);
     const [bookseries, setBookseries] = useState<Bookserie[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isLibraryEmpty, setIsLibraryEmpty] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await LibraryService.getBooks();
-                setBooks(response);
+                const fetchedBooks = await LibraryService.getBooks();
+                setBooks(fetchedBooks ?? []);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -22,8 +23,12 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
 
         const fetchBookseries = async () => {
             try {
-                const response = await LibraryService.getBookseries();
-                setBookseries(response);
+                const fetchedBookseries = await LibraryService.getBookseries();
+                if (!fetchedBookseries || fetchedBookseries.length === 0) {
+                    setIsLibraryEmpty(true);
+                } else {
+                    setBookseries(fetchedBookseries);
+                }
             } catch (error) {
                 console.error(error);
             } finally {
@@ -40,8 +45,9 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
             books,
             bookseries: bookseries,
             loading,
+            isLibraryEmpty: isLibraryEmpty,
         }),
-        [books, bookseries, loading],
+        [books, bookseries, loading, isLibraryEmpty],
     );
 
     return (

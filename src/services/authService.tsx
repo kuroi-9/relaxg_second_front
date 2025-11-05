@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import { type User } from "../types";
+import type { User } from "../types";
 
 const AuthService = {
     async login(username: string, password: string): Promise<User | null> {

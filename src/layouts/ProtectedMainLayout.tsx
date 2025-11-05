@@ -8,6 +8,7 @@ import LibraryProvider from "../contexts/LibraryContext";
 import { useAuth } from "../hooks/useAuth";
 import JobsTab from "../pages/dashboard/jobs/JobsTab";
 import LibraryTab from "../pages/dashboard/library/LibraryTab";
+import JobsManagerContextProvider from "../contexts/JobsManagerContext";
 
 // Private (protected) layout
 const PrivateMainLayout: React.FC = () => {
@@ -44,7 +45,7 @@ const PrivateMainLayout: React.FC = () => {
         <>
             <div
                 id="main-container"
-                className="grid grid-rows-[1fr_10rem] gap-2 h-full"
+                className="grid grid-rows-[1fr] gap-2 h-min"
                 style={{ marginTop: "4rem" }}
             >
                 <div
@@ -63,7 +64,9 @@ const PrivateMainLayout: React.FC = () => {
                     >
                         <DashboardTopTabs>
                             <div aria-label="Jobs">
-                                <JobsTab />
+                                <JobsManagerContextProvider>
+                                    <JobsTab />
+                                </JobsManagerContextProvider>
                             </div>
                             <div aria-label="Library">
                                 <LibraryProvider>
