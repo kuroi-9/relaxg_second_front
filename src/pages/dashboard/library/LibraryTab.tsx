@@ -36,7 +36,9 @@ export default function LibraryTab() {
                 fitWidth: true, // allows the grid to fit the width of its container, ensuring centered alignment with auto margins
                 transitionDuration: 0, // disables animations for instant layout updates
             });
-            console.log("Images loaded, masonry layout initialized");
+
+            console.log("Images loading, masonry layout updated");
+
             if (window.location.hash) {
                 const bookserieToBeSelected = bookseries.find(
                     (bookserie) =>
@@ -48,7 +50,11 @@ export default function LibraryTab() {
                 }
             }
         });
-    });
+
+        imagesLoaded(grid).on("done", function () {
+            // layout Masonry after all images have loaded
+        });
+    }, [bookseries]);
 
     /**
      * A separate hook (useWindowSize) is necessary to handle the Masonry layout update when window dimensions change.

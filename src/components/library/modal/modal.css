@@ -5,17 +5,18 @@
     height: 100vh;
     background-color: rgb(0 0 0 / 60%);
     position: fixed;
+    overflow-y: auto;
 }
 
 .modalContainer {
     display: grid;
-    grid-template-rows: 10% 80% 10%;
+    grid-template-rows: 1fr 20rem 1fr;
     background-color: var(--background);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     min-height: 65%;
     border: 1px solid gray;
     width: 90%;
-    height: 75%;
+    height: min-content;
     transform: translate(5.75%, 16.5%);
 }
 
@@ -47,7 +48,7 @@
 @media screen and (max-width: 851px) {
     .modalContainer .body {
         flex-direction: column;
-        overflow: scroll;
+        overflow-y: scroll;
         align-items: center;
         justify-content: initial;
     }
@@ -61,7 +62,11 @@
 
 @media screen and (min-width: 852px) {
     .bookseries-books {
-        overflow: scroll;
+        overflow-y: auto;
+    }
+
+    .modalContainer .body img {
+        margin-right: 0;
     }
 }
 
@@ -84,11 +89,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.modalContainer .footer button {
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+    padding: 0.5rem;
 }
 
 /*.titleCloseBtn {

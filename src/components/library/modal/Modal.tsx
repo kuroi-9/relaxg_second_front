@@ -88,7 +88,7 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
                         </button>
                     )}
                     <button
-                        className="secondary-button ml-2"
+                        className="secondary-button border h-full pl-2 pr-2 ml-2"
                         onClick={cancelFn}
                         id="cancelBtn"
                     >
