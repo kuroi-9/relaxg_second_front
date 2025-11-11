@@ -107,11 +107,11 @@ body.modal-open {
 .primary-input:focus,
 .nav-link:active,
 .borderless-primary-button:active,
-.bookseries-grid-item:active {
+.titles-grid-item:active {
     outline: 5px solid #fcd34d;
 }
 
-.bookseries-grid-item {
+.titles-grid-item {
     -webkit-user-select: none;
 }
 

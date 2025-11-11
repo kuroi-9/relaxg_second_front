@@ -1,4 +1,5 @@
 import imagesLoaded from "imagesloaded";
+import axiosInstance from "../../../api/axios";
 import Masonry from "masonry-layout";
 import { useEffect, useRef, useState } from "react";
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
@@ -7,31 +8,40 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useLibrary } from "../../../hooks/useLibrary";
 import useWindowSize from "../../../hooks/useWindowSize";
 import "../../../index.css";
-import type { Bookserie } from "../../../types";
-import { BookserieGridItem } from "../../../components/library/BookserieGridItem";
+import type { Title } from "../../../types";
+import { TitleGridItem } from "../../../components/library/TitleGridItem";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export default function LibraryTab() {
     const { isAuthenticated } = useAuth();
-    const { bookseries, loading, isLibraryEmpty } = useLibrary();
+    const { titles, loading, isLibraryEmpty } = useLibrary();
     const dimensions = useWindowSize();
     const masonry = useRef<Masonry | null>(null);
-    const [selectedBookseries, setSelectedBookseries] =
-        useState<Bookserie | null>(null);
+    const [selectedTitle, setSelectedTitle] = useState<Title | null>(null);
+
+    const handleCreateJob = () => {
+        axiosInstance
+            .post("/library/process/", {
+                title_id: selectedTitle?.id,
+            })
+            .then((res) => {
+                console.log(res);
+            });
+    };
 
     /**
-     * Initialize Masonry layout when bookseries data is available, after the component mounts.
+     * Initialize Masonry layout when titles data is available, after the component mounts.
      */
     useEffect(() => {
-        if (bookseries.length === 0) return;
-        const grid = document.querySelector(".bookseries-grid");
+        if (titles.length === 0) return;
+        const grid = document.querySelector(".titles-grid");
         if (!grid) return;
 
         imagesLoaded(grid).on("progress", function () {
             // layout Masonry after each image loads
             masonry.current = new Masonry(grid, {
-                itemSelector: ".bookseries-grid-item",
+                itemSelector: ".titles-grid-item",
                 gutter: 8,
                 fitWidth: true, // allows the grid to fit the width of its container, ensuring centered alignment with auto margins
                 transitionDuration: 0, // disables animations for instant layout updates
@@ -40,13 +50,13 @@ export default function LibraryTab() {
             console.log("Images loading, masonry layout updated");
 
             if (window.location.hash) {
-                const bookserieToBeSelected = bookseries.find(
-                    (bookserie) =>
-                        bookserie.id ===
+                const titleToBeSelected = titles.find(
+                    (title) =>
+                        title.id ===
                         Number(window.location.hash.replace("#", "")),
                 );
-                if (bookserieToBeSelected) {
-                    setSelectedBookseries(bookserieToBeSelected);
+                if (titleToBeSelected) {
+                    setSelectedTitle(titleToBeSelected);
                 }
             }
         });
@@ -54,7 +64,7 @@ export default function LibraryTab() {
         imagesLoaded(grid).on("done", function () {
             // layout Masonry after all images have loaded
         });
-    }, [bookseries]);
+    }, [titles]);
 
     /**
      * A separate hook (useWindowSize) is necessary to handle the Masonry layout update when window dimensions change.
@@ -65,12 +75,12 @@ export default function LibraryTab() {
     }, [dimensions]);
 
     /**
-     * Handles the history state update when the selected book series changes.
+     * Handles the history state update when the selected title changes.
      */
     useEffect(() => {
-        if (!selectedBookseries) return;
-        window.history.replaceState(null, "", `#${selectedBookseries.id}`);
-    }, [selectedBookseries]);
+        if (!selectedTitle) return;
+        window.history.replaceState(null, "", `#${selectedTitle.id}`);
+    }, [selectedTitle]);
 
     /**
      * Authentication check
@@ -83,22 +93,22 @@ export default function LibraryTab() {
 
     return (
         <div className="h-full">
-            {selectedBookseries && (
+            {selectedTitle && (
                 <Modal
-                    open={Boolean(selectedBookseries)}
-                    titleContent={selectedBookseries?.title ?? null}
-                    secondaryFn={() => setSelectedBookseries(null)}
+                    open={Boolean(selectedTitle)}
+                    titleContent={selectedTitle?.name ?? null}
+                    secondaryFn={() => handleCreateJob()}
                     cancelFn={() => {
-                        setSelectedBookseries(null);
+                        setSelectedTitle(null);
                         window.history.replaceState(null, "#", " ");
                     }}
-                    content={selectedBookseries}
+                    content={selectedTitle}
                     VITE_API_URL={VITE_API_URL}
                 />
             )}
 
             <div
-                className="bookseries-grid"
+                className="titles-grid"
                 // to trigger the layout update when window dimensions change, we need to subtract 30 from the width hooked
                 style={{ margin: "0 auto", maxWidth: dimensions[0] - 30 }}
             >
@@ -107,25 +117,23 @@ export default function LibraryTab() {
                         <p>Loading...</p>
                     </div>
                 ) : !isLibraryEmpty ? (
-                    bookseries.length === 0 ? (
+                    titles.length === 0 ? (
                         <div className="text-center p-4">
                             <p>Finalizing...</p>
                         </div>
                     ) : (
-                        bookseries.map((bookserie) => (
-                            <BookserieGridItem
-                                key={bookserie.id}
-                                bookserie={bookserie}
-                                setSelectedBookseries={() =>
-                                    setSelectedBookseries(bookserie)
-                                }
+                        titles.map((title) => (
+                            <TitleGridItem
+                                key={title.id}
+                                title={title}
+                                setSelectedTitle={() => setSelectedTitle(title)}
                                 VITE_API_URL={VITE_API_URL}
                             />
                         ))
                     )
                 ) : (
                     <div className="text-center p-4">
-                        <p>No book series found.</p>
+                        <p>No title found.</p>
                     </div>
                 )}
             </div>

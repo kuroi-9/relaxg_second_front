@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import LibraryService from "../services/libraryService";
-import type { Bookserie, Book } from "../types";
+import type { Title, Book } from "../types";
 import LibraryContext from "./LibraryContextDefinition";
 
 const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
     const [books, setBooks] = useState<Book[]>([]);
-    const [bookseries, setBookseries] = useState<Bookserie[]>([]);
+    const [titles, setTitles] = useState<Title[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isLibraryEmpty, setIsLibraryEmpty] = useState<boolean>(false);
 
@@ -13,7 +13,11 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
         const fetchBooks = async () => {
             try {
                 const fetchedBooks = await LibraryService.getBooks();
-                setBooks(fetchedBooks ?? []);
+                if (!fetchedBooks || fetchedBooks.length === 0) {
+                    setIsLibraryEmpty(true);
+                } else {
+                    setBooks(fetchedBooks);
+                }
             } catch (error) {
                 console.error(error);
             } finally {
@@ -21,13 +25,13 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
             }
         };
 
-        const fetchBookseries = async () => {
+        const fetchTitles = async () => {
             try {
-                const fetchedBookseries = await LibraryService.getBookseries();
-                if (!fetchedBookseries || fetchedBookseries.length === 0) {
+                const fetchedTitles = await LibraryService.getTitles();
+                if (!fetchedTitles || fetchedTitles.length === 0) {
                     setIsLibraryEmpty(true);
                 } else {
-                    setBookseries(fetchedBookseries);
+                    setTitles(fetchedTitles);
                 }
             } catch (error) {
                 console.error(error);
@@ -37,17 +41,17 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
         };
 
         fetchBooks();
-        fetchBookseries();
+        fetchTitles();
     }, []);
 
     const value = useMemo(
         () => ({
             books,
-            bookseries: bookseries,
+            titles: titles,
             loading,
             isLibraryEmpty: isLibraryEmpty,
         }),
-        [books, bookseries, loading, isLibraryEmpty],
+        [books, titles, loading, isLibraryEmpty],
     );
 
     return (

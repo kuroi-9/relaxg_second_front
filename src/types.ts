@@ -23,17 +23,17 @@ export interface AuthContextType {
 
 export interface Book {
     id: number;
-    title: string;
+    name: string;
     author: string;
     isbn: string | null;
-    series: Bookserie | null;
+    title: Title | null;
     filePath: string;
     status: string;
 }
 
-export interface Bookserie {
+export interface Title {
     id: number;
-    title: string;
+    name: string;
     directory_path: string;
     description: string | null;
     cover_image: string | null;
@@ -44,7 +44,7 @@ export interface Bookserie {
  */
 export interface LibraryContextType {
     books: Book[];
-    bookseries: Bookserie[];
+    titles: Title[];
     loading: boolean;
     isLibraryEmpty: boolean;
 }
@@ -55,6 +55,7 @@ export interface LibraryContextType {
 export interface JobsManagerContextType {
     jobs: Job[];
     loading: boolean;
+    startJob: (jobId: number) => Promise<Job | null>;
 }
 
 /**
@@ -62,8 +63,12 @@ export interface JobsManagerContextType {
  */
 export interface Job {
     id: number;
-    title: string;
+    title_name: string;
     description: string | null;
+    images_number: number;
     status: string;
+    step: string;
     created_at: string;
+    completed_at: string | null;
+    used_model_name: string;
 }

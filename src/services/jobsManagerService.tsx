@@ -26,6 +26,23 @@ const JobsManagerService = {
         }
     },
 
+    /**
+     * Starts a job with the given ID.
+     * @param id The ID of the job to start.
+     * @returns A promise that resolves to the updated job or null if an error occurs.
+     */
+    async startJob(jobId: number): Promise<Job | null> {
+        try {
+            const response = await axios.post("/jobs/inference/", {
+                id: jobId,
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error starting job:", error);
+            return null;
+        }
+    },
+
     // async getJobById(id: string): Promise<Job | null> {
     //     try {
     //         const response = await axios.get(`/jobs/${id}`);

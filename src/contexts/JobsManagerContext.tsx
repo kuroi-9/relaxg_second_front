@@ -11,6 +11,27 @@ const JobsManagerContextProvider = ({
     const [jobs, setJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const startJob = useMemo(
+        () =>
+            async (jobId: number): Promise<Job | null> => {
+                try {
+                    const updatedJob = await JobsManagerService.startJob(jobId);
+                    if (updatedJob) {
+                        setJobs((prevJobs) =>
+                            prevJobs.map((job) =>
+                                job.id === jobId ? updatedJob : job,
+                            ),
+                        );
+                    }
+                    return updatedJob;
+                } catch (error) {
+                    console.error("Error starting job:", error);
+                    return null;
+                }
+            },
+        [],
+    );
+
     useEffect(() => {
         const fetchJobs = async () => {
             try {
@@ -30,8 +51,9 @@ const JobsManagerContextProvider = ({
         () => ({
             jobs,
             loading,
+            startJob,
         }),
-        [jobs, loading],
+        [jobs, loading, startJob],
     );
 
     return (

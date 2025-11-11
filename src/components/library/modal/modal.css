@@ -10,7 +10,7 @@
 
 .modalContainer {
     display: grid;
-    grid-template-rows: 1fr 20rem 1fr;
+    grid-template-rows: 1fr 25rem 1fr;
     background-color: var(--background);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     min-height: 65%;
@@ -61,7 +61,7 @@
 }
 
 @media screen and (min-width: 852px) {
-    .bookseries-books {
+    .titles-books {
         overflow-y: auto;
     }
 
@@ -71,21 +71,21 @@
 }
 
 .modalContainer .body::-webkit-scrollbar,
-.bookseries-books::-webkit-scrollbar,
+.titles-books::-webkit-scrollbar,
 .modalBackground::-webkit-scrollbar {
     width: 0.5rem;
 }
 
 .modalContainer .body::-webkit-scrollbar-track,
-.bookseries-books::-webkit-scrollbar-track,
+.titles-books::-webkit-scrollbar-track,
 .modalBackground::-webkit-scrollbar-track {
     border-radius: 0;
     background-color: var(--background);
-    border: 1px solid #464646;
+    /*border: 1px solid #464646;*/
 }
 
 .modalContainer .body::-webkit-scrollbar-thumb,
-.bookseries-books::-webkit-scrollbar-thumb,
+.titles-books::-webkit-scrollbar-thumb,
 .modalBackground::-webkit-scrollbar-thumb {
     border-radius: 0;
     background-color: #464646;

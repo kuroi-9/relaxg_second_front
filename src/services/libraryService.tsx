@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import type { Book, Bookserie } from "../types"; // Importe tes types
+import type { Book, Title } from "../types"; // Importe tes types
 
 const LibraryService = {
     /**
@@ -17,15 +17,15 @@ const LibraryService = {
     },
 
     /**
-     * Fetches every bookseries available in the library.
-     * @returns An array of bookseries or null if an error occurs.
+     * Fetches every titles available in the library.
+     * @returns An array of titles or null if an error occurs.
      */
-    async getBookseries(): Promise<Bookserie[] | null> {
+    async getTitles(): Promise<Title[] | null> {
         try {
-            const response = await axios.get("/library/bookseries/");
-            return response.data.bookseries;
+            const response = await axios.get("/library/titles/");
+            return response.data.titles;
         } catch (error) {
-            console.error("Error fetching bookseries:", error);
+            console.error("Error fetching titles:", error);
             throw error;
         }
     },

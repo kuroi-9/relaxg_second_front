@@ -2,34 +2,28 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
 import type { Book } from "../../types";
 
-async function fetchBooksByBookseriesTitle(
-    bookseries_title: string,
-): Promise<Book[]> {
+async function fetchBooksByTitleName(title_name: string): Promise<Book[]> {
     try {
         const response = await axiosInstance.get(
-            `/library/bookseries/books/${bookseries_title}`,
+            `/library/titles/books/${title_name}`,
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching books by bookseries title:", error);
+        console.error("Error fetching books by title_name:", error);
         throw error;
     }
 }
 
-export function BookseriesBooks({
-    bookseries_title,
-}: {
-    bookseries_title: string;
-}) {
+export function TitleBooks({ title_name }: { title_name: string }) {
     const [books, setBooks] = useState<Book[]>([]);
 
     useEffect(() => {
-        fetchBooksByBookseriesTitle(bookseries_title).then(setBooks);
-    }, [bookseries_title]);
+        fetchBooksByTitleName(title_name).then(setBooks);
+    }, [title_name]);
 
     return (
         <div
-            className={`bookseries-books ${
+            className={`titles-books ${
                 books.length > 16
                     ? "grid grid-cols-2 gap-4 p-4 w-full"
                     : "flex flex-col items-start gap-4 p-4 w-full"
@@ -40,10 +34,10 @@ export function BookseriesBooks({
             )}
 
             {books
-                .sort((a, b) => a.title.localeCompare(b.title))
+                .sort((a, b) => a.name.localeCompare(b.name))
                 .map((book, index) => (
                     <div key={index} className="border p-2 h-min w-full">
-                        <p>{book.title}</p>
+                        <p>{book.name}</p>
                     </div>
                 ))}
         </div>

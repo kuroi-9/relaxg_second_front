@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "../../../index.css";
-import type { Bookserie } from "../../../types";
-import { BookseriesBooks } from "../BookserieBooks";
+import type { Title } from "../../../types";
+import { TitleBooks } from "../TitleBooks";
 import "./modal.css";
 
 interface externalProps {
@@ -14,7 +14,7 @@ interface Props {
     primaryFn?: () => void;
     secondaryFn?: () => void;
     titleContent?: React.ReactNode;
-    content: Bookserie;
+    content: Title;
 }
 
 export const Modal: React.FC<Props & externalProps> = (props) => {
@@ -68,11 +68,11 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
 
                 <div className="body">
                     <img
-                        src={`${VITE_API_URL}library/bookseries/covers/?cover_path=${content.cover_image}`}
-                        alt={`${content.title} cover`}
+                        src={`${VITE_API_URL}library/titles/covers/?cover_path=${content.cover_image}`}
+                        alt={`${content.name} cover`}
                         className="modal-img m-4"
                     />
-                    <BookseriesBooks bookseries_title={content.title} />
+                    <TitleBooks title_name={content.name} />
                 </div>
 
                 <div className="footer">
