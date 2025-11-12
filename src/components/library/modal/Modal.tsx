@@ -94,6 +94,13 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
                     </button>
                     {primaryFn && <button onClick={primaryFn}>Continue</button>}
                 </div>
+
+                <div
+                    style={{
+                        backgroundColor: "transparent",
+                        height: "5rem",
+                    }}
+                ></div>
             </div>
         </div>
     );
