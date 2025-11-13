@@ -17,7 +17,7 @@ interface Props {
     content: Title;
 }
 
-export const Modal: React.FC<Props & externalProps> = (props) => {
+export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
     const {
         open,
         cancelFn,
@@ -62,8 +62,8 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
     if (!open) return null;
 
     return (
-        <div className="modalBackground z-20">
-            <div className="modalContainer z-50 w-8/12">
+        <div className="modal-background z-20">
+            <div className="modal-container z-50 w-8/12">
                 {titleContent && <div className="title">{titleContent}</div>}
 
                 <div className="body">
@@ -95,12 +95,7 @@ export const Modal: React.FC<Props & externalProps> = (props) => {
                     {primaryFn && <button onClick={primaryFn}>Continue</button>}
                 </div>
 
-                <div
-                    style={{
-                        backgroundColor: "transparent",
-                        height: "5rem",
-                    }}
-                ></div>
+                <div className="footer-gap" />
             </div>
         </div>
     );

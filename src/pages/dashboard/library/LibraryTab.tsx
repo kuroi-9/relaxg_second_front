@@ -3,7 +3,7 @@ import axiosInstance from "../../../api/axios";
 import Masonry from "masonry-layout";
 import { useEffect, useRef, useState } from "react";
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
-import { Modal } from "../../../components/library/modal/Modal";
+import { SingleTitleModal } from "../../../components/library/modal/SingleTitleModal";
 import { useAuth } from "../../../hooks/useAuth";
 import { useLibrary } from "../../../hooks/useLibrary";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -94,7 +94,7 @@ export default function LibraryTab() {
     return (
         <div className="h-full">
             {selectedTitle && (
-                <Modal
+                <SingleTitleModal
                     open={Boolean(selectedTitle)}
                     titleContent={selectedTitle?.name ?? null}
                     secondaryFn={() => handleCreateJob()}
