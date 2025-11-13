@@ -10,9 +10,8 @@
 
 .modal-container {
     display: grid;
-    grid-template-rows: 1fr 25rem 1fr;
+    grid-template-rows: min-content 25rem min-content;
     background-color: transparent;
-    min-height: 65%;
     width: 90%;
     height: min-content;
     transform: translate(5.75%, 15%);
@@ -54,7 +53,12 @@
 
 @media screen and (max-width: 851px) {
     .modal-container {
-        transform: translate(5.75%, 10%);
+    	width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        transform: translate(0, 2rem);
+        height: 100%;
+        grid-template-rows: min-content 1fr min-content;
     }
 
     .modal-container .body {
