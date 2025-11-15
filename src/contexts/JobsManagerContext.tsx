@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import JobsManagerService from "../services/jobsManagerService";
 import type { Job } from "../types";
 import JobsManagerContext from "./JobsManagerContextDefinition";
@@ -32,6 +32,23 @@ const JobsManagerContextProvider = ({
         [],
     );
 
+    const deleteJob = useCallback(async (jobId: number) => {
+        try {
+            const isDeleted = await JobsManagerService.deleteJob(jobId);
+            if (isDeleted) {
+                setJobs((prevJobs) =>
+                    prevJobs.filter((job) => job.id !== jobId),
+                );
+            } else {
+                console.error("Failed to delete job");
+            }
+        } catch (error) {
+            console.error("Error deleting job:", error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         const fetchJobs = async () => {
             try {
@@ -52,8 +69,9 @@ const JobsManagerContextProvider = ({
             jobs,
             loading,
             startJob,
+            deleteJob,
         }),
-        [jobs, loading, startJob],
+        [jobs, loading, startJob, deleteJob],
     );
 
     return (
