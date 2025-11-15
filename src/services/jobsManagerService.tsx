@@ -70,15 +70,15 @@ const JobsManagerService = {
     //     }
     // },
 
-    // async deleteJob(id: string): Promise<boolean> {
-    //     try {
-    //         await axios.delete(`/jobs/${id}`);
-    //         return true;
-    //     } catch (error) {
-    //         console.error("Error deleting job:", error);
-    //         return false;
-    //     }
-    // },
+    async deleteJob(id: number): Promise<boolean> {
+        try {
+            await axios.delete(`/jobs/delete/${id}`);
+            return true;
+        } catch (error) {
+            console.error("Error deleting job:", error);
+            return false;
+        }
+    },
 };
 
 export default JobsManagerService;

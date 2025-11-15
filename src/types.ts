@@ -56,6 +56,7 @@ export interface JobsManagerContextType {
     jobs: Job[];
     loading: boolean;
     startJob: (jobId: number) => Promise<Job | null>;
+    deleteJob: (jobId: number) => Promise<void>;
 }
 
 /**
