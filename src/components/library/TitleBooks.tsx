@@ -14,12 +14,24 @@ async function fetchBooksByTitleName(title_name: string): Promise<Book[]> {
     }
 }
 
-export function TitleBooks({ title_name }: { title_name: string }) {
+export function TitleBooks({
+    title_name,
+    percentages,
+}: {
+    title_name: string;
+    percentages: number[] | undefined;
+}) {
     const [books, setBooks] = useState<Book[]>([]);
 
     useEffect(() => {
         fetchBooksByTitleName(title_name).then(setBooks);
     }, [title_name]);
+
+    useEffect(() => {
+        if (percentages !== undefined) {
+            console.dir(percentages);
+        }
+    }, [percentages]);
 
     return (
         <div
@@ -36,8 +48,24 @@ export function TitleBooks({ title_name }: { title_name: string }) {
             {books
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((book, index) => (
-                    <div key={index} className="border p-2 h-min w-full">
+                    <div
+                        key={index}
+                        className={`border flex ${percentages ? "justify-between" : "justify-center"} items-center p-2 h-min w-full`}
+                    >
                         <p>{book.name}</p>
+                        {percentages && (
+                            <div
+                                style={{
+                                    backgroundColor: "#171717",
+                                    color: "white",
+                                    paddingRight: "0.25rem",
+                                    paddingLeft: "0.25rem",
+                                    height: "min-content",
+                                }}
+                            >
+                                {percentages[index] ?? "..."}
+                            </div>
+                        )}
                     </div>
                 ))}
         </div>

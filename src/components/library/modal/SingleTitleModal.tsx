@@ -72,7 +72,10 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
                         alt={`${content.name} cover`}
                         className="modal-img m-4"
                     />
-                    <TitleBooks title_name={content.name} />
+                    <TitleBooks
+                        title_name={content.name}
+                        percentages={undefined}
+                    />
                 </div>
 
                 <div className="footer">

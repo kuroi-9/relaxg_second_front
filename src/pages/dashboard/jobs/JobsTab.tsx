@@ -1,11 +1,18 @@
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
+import { TitleBooks } from "../../../components/library/TitleBooks";
 import { useAuth } from "../../../hooks/useAuth";
 import { useJobsManager } from "../../../hooks/useJobsManager";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+
+export type JobPercentage = {
+    title_name: string;
+    percentages: number[];
+};
 
 export default function JobsTab() {
     const { isAuthenticated } = useAuth();
     const { jobs, loading, startJob, deleteJob } = useJobsManager();
+    const [percentages, setPercentages] = useState<JobPercentage[]>([]);
 
     const handleStartJob = (jobId: number) => {
         console.log(`Starting job with ID: ${jobId}`);
@@ -33,6 +40,36 @@ export default function JobsTab() {
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log(data.message);
+            if (data.title_name && data.percentages) {
+                console.log(data.title_name);
+                console.log(data.percentages);
+
+                setPercentages((prevPercentages) => {
+                    const existingIndex = prevPercentages.findIndex(
+                        (item) => item.title_name === data.title_name,
+                    );
+                    const newPercentages = data.percentages
+                        .split("|")
+                        .map(Number);
+
+                    if (existingIndex !== -1) {
+                        const updatedPercentages = [...prevPercentages];
+                        updatedPercentages[existingIndex] = {
+                            title_name: data.title_name,
+                            percentages: newPercentages,
+                        };
+                        return updatedPercentages;
+                    } else {
+                        return [
+                            ...prevPercentages,
+                            {
+                                title_name: data.title_name,
+                                percentages: newPercentages,
+                            },
+                        ];
+                    }
+                });
+            }
         };
 
         return () => socket.close();
@@ -77,6 +114,15 @@ export default function JobsTab() {
                                 </p>
                             </div>
                         </div>
+                        <TitleBooks
+                            title_name={job.title_name}
+                            percentages={
+                                percentages.find(
+                                    (item) =>
+                                        item.title_name === job.title_name,
+                                )?.percentages
+                            }
+                        />
                         {index < jobs.length - 1 && <hr />}
                     </section>
                 ))

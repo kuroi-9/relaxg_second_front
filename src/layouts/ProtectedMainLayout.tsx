@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { LayoutBottomNav } from "../components/ProtectedLayoutBottomNav";
-import Footer from "../components/ProtectedLayoutFooter";
+// import Footer from "../components/ProtectedLayoutFooter";
 import LoadingComponent from "../components/auth/LoadingComponent";
 import DashboardTopTabs from "../components/dashboard/DashboardTopTabs";
 import LibraryProvider from "../contexts/LibraryContext";
@@ -46,7 +46,7 @@ const PrivateMainLayout: React.FC = () => {
             <div
                 id="main-container"
                 className="grid grid-rows-[1fr] gap-2 h-min"
-                style={{ marginTop: "4rem" }}
+                style={{ paddingTop: "4rem", paddingBottom: "4rem" }}
             >
                 <div
                     id="main-content"
@@ -76,7 +76,7 @@ const PrivateMainLayout: React.FC = () => {
                         </DashboardTopTabs>
                     </div>
                 </div>
-                {!isFullScreen && <Footer></Footer>}
+                {/*{!isFullScreen && <Footer></Footer>}*/}
             </div>
         </>
     );
