@@ -32,6 +32,17 @@ const JobsManagerContextProvider = ({
         [],
     );
 
+    const stopJob = useCallback(async (jobId: number) => {
+        try {
+            const isStopped = await JobsManagerService.stopJob(jobId);
+            if (isStopped) {
+                console.log("Job stopped successfully");
+            }
+        } catch (error) {
+            console.error("Error stopping job:", error);
+        }
+    }, []);
+
     const deleteJob = useCallback(async (jobId: number) => {
         try {
             const isDeleted = await JobsManagerService.deleteJob(jobId);
@@ -70,8 +81,9 @@ const JobsManagerContextProvider = ({
             loading,
             startJob,
             deleteJob,
+            stopJob,
         }),
-        [jobs, loading, startJob, deleteJob],
+        [jobs, loading, startJob, deleteJob, stopJob],
     );
 
     return (

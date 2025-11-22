@@ -11,12 +11,17 @@ export type JobPercentage = {
 
 export default function JobsTab() {
     const { isAuthenticated } = useAuth();
-    const { jobs, loading, startJob, deleteJob } = useJobsManager();
+    const { jobs, loading, startJob, deleteJob, stopJob } = useJobsManager();
     const [percentages, setPercentages] = useState<JobPercentage[]>([]);
 
     const handleStartJob = (jobId: number) => {
         console.log(`Starting job with ID: ${jobId}`);
         startJob(jobId);
+    };
+
+    const handleStopJob = (jobId: number) => {
+        console.log(`Stopping job with ID: ${jobId}`);
+        stopJob(jobId);
     };
 
     const handleDeleteJob = (jobId: number) => {
@@ -91,8 +96,8 @@ export default function JobsTab() {
                 <div>Loading...</div>
             ) : (
                 jobs.map((job, index) => (
-                    <section className="mb-2" key={job.id}>
-                        <div className="mb-2" key={job.id}>
+                    <section key={index} className="mb-2">
+                        <div className="mb-2">
                             <p className="mb-2">{job.title_name}</p>
                             <div className="flex gap-2 justify-center mb-2">
                                 <button
@@ -100,6 +105,12 @@ export default function JobsTab() {
                                     onClick={() => handleStartJob(job.id)}
                                 >
                                     Start
+                                </button>
+                                <button
+                                    className="primary-button"
+                                    onClick={() => handleStopJob(job.id)}
+                                >
+                                    Stop
                                 </button>
                                 <button
                                     className="primary-button"

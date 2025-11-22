@@ -70,6 +70,16 @@ const JobsManagerService = {
     //     }
     // },
 
+    async stopJob(jobId: number): Promise<boolean> {
+        try {
+            const response = await axios.post(`/jobs/stop/${jobId}`);
+            return response.status === 200;
+        } catch (error) {
+            console.error("Error stopping job:", error);
+            return false;
+        }
+    },
+
     async deleteJob(id: number): Promise<boolean> {
         try {
             await axios.delete(`/jobs/delete/${id}`);
