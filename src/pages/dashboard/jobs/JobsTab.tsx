@@ -116,7 +116,7 @@ export default function JobsTab() {
                                     Stop
                                 </button>
                                 <button
-                                    className="primary-button"
+                                    className="delete-button"
                                     onClick={() => handleDeleteJob(job.id)}
                                 >
                                     Delete
