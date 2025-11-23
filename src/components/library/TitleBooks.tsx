@@ -29,9 +29,9 @@ export function TitleBooks({
 
     useEffect(() => {
         if (percentages !== undefined) {
-            console.dir(percentages);
+            console.log(`${title_name} percentages:`, percentages);
         }
-    }, [percentages]);
+    }, [title_name, percentages]);
 
     return (
         <div

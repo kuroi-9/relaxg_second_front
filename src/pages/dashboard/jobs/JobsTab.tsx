@@ -48,9 +48,6 @@ export default function JobsTab() {
             const data = JSON.parse(e.data);
             console.log(data.message);
             if (data.title_name && data.percentages) {
-                console.log(data.title_name);
-                console.log(data.percentages);
-
                 setPercentages((prevPercentages) => {
                     const existingIndex = prevPercentages.findIndex(
                         (item) => item.title_name === data.title_name,
@@ -80,13 +77,17 @@ export default function JobsTab() {
         };
 
         return () => socket.close();
-    }, []);
+    }, [fetchJobsProgress]);
 
     if (!isAuthenticated) {
         return <JokerAccessForbidden />;
     } else {
-        console.log(loading);
-        console.log("Access granted to JobsTab");
+        if (loading) {
+            console.log("Loading...");
+        } else {
+            console.log("Not loading");
+            console.log("Access granted to JobsTab");
+        }
     }
 
     return (

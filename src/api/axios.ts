@@ -72,9 +72,11 @@ axiosInstance.interceptors.response.use(
             !(originalRequest as ExtendedAxiosRequestConfig)._retry &&
             !originalRequest.url?.includes("/token/refresh/")
         ) {
+            console.log("I try");
             (originalRequest as ExtendedAxiosRequestConfig)._retry = true; // Mark the request as retried
 
             if (isRefreshing) {
+                console.log("I'm trying");
                 // If a refresh is already in progress, put this request on hold
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject, originalRequest });
@@ -109,6 +111,8 @@ axiosInstance.interceptors.response.use(
                 // We'll handle this in the `AuthContext` by injecting the logout function.
                 throw refreshError as AxiosError; // Rejeter l'erreur pour que le flux normal du catch soit appelé
             }
+        } else {
+            console.log("I tried");
         }
 
         return Promise.reject(error);
