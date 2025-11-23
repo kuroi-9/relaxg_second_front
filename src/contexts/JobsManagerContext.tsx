@@ -11,6 +11,18 @@ const JobsManagerContextProvider = ({
     const [jobs, setJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const fetchJobsProgress = useMemo(
+        () => async () => {
+            try {
+                return await JobsManagerService.getJobsProgress();
+            } catch (error) {
+                console.error("Error starting job:", error);
+                return false;
+            }
+        },
+        [],
+    );
+
     const startJob = useMemo(
         () =>
             async (jobId: number): Promise<Job | null> => {
@@ -82,8 +94,9 @@ const JobsManagerContextProvider = ({
             startJob,
             deleteJob,
             stopJob,
+            fetchJobsProgress,
         }),
-        [jobs, loading, startJob, deleteJob, stopJob],
+        [jobs, loading, startJob, deleteJob, stopJob, fetchJobsProgress],
     );
 
     return (

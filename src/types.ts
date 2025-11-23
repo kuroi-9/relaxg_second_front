@@ -58,6 +58,7 @@ export interface JobsManagerContextType {
     startJob: (jobId: number) => Promise<Job | null>;
     deleteJob: (jobId: number) => Promise<void>;
     stopJob: (jobId: number) => Promise<void>;
+    fetchJobsProgress: () => Promise<boolean>;
 }
 
 /**

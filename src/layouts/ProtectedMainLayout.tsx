@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { LayoutBottomNav } from "../components/ProtectedLayoutBottomNav";
 // import Footer from "../components/ProtectedLayoutFooter";
@@ -19,7 +19,7 @@ const PrivateMainLayout: React.FC = () => {
         return <LoadingComponent />;
     }
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        window.location.href = "/login";
     }
 
     const toggleVisibilityParent = (): void => {

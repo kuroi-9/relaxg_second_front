@@ -37,7 +37,7 @@ export function TitleBooks({
         <div
             className={`titles-books ${
                 books.length > 16
-                    ? "grid grid-cols-2 gap-4 p-4 w-full"
+                    ? "md:grid md:grid-cols-2 md:gap-4 md:p-4 md:w-full flex flex-col items-start gap-4 p-4 w-full"
                     : "flex flex-col items-start gap-4 p-4 w-full"
             }`}
         >
@@ -52,7 +52,11 @@ export function TitleBooks({
                         key={index}
                         className={`border flex ${percentages ? "justify-between" : "justify-center"} items-center p-2 h-min w-full`}
                     >
-                        <p>{book.name}</p>
+                        <p
+                            className={`${percentages ? "text-left w-5/6" : ""}`}
+                        >
+                            {book.name}
+                        </p>
                         {percentages && (
                             <div
                                 style={{

@@ -11,7 +11,8 @@ export type JobPercentage = {
 
 export default function JobsTab() {
     const { isAuthenticated } = useAuth();
-    const { jobs, loading, startJob, deleteJob, stopJob } = useJobsManager();
+    const { jobs, loading, startJob, deleteJob, stopJob, fetchJobsProgress } =
+        useJobsManager();
     const [percentages, setPercentages] = useState<JobPercentage[]>([]);
 
     const handleStartJob = (jobId: number) => {
@@ -36,6 +37,7 @@ export default function JobsTab() {
 
         socket.onopen = function () {
             console.log("WebSocket connection opened");
+            fetchJobsProgress();
         };
 
         socket.onclose = function () {

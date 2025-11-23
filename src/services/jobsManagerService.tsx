@@ -26,6 +26,16 @@ const JobsManagerService = {
         }
     },
 
+    async getJobsProgress(): Promise<boolean> {
+        try {
+            const response = await axios.get("/jobs/progress/");
+            return response.data === 200;
+        } catch (error) {
+            console.error("Error fetching jobs progress:", error);
+            return false;
+        }
+    },
+
     /**
      * Starts a job with the given ID.
      * @param id The ID of the job to start.
