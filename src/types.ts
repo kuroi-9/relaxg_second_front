@@ -56,9 +56,10 @@ export interface JobsManagerContextType {
     jobs: Job[];
     loading: boolean;
     startJob: (jobId: number) => Promise<Job | null>;
-    deleteJob: (jobId: number) => Promise<void>;
+    deleteJob: (jobId: number) => Promise<boolean>;
     stopJob: (jobId: number) => Promise<void>;
     fetchJobsProgress: () => Promise<boolean>;
+    fetchJobStatus: (jobId: number) => Promise<JobStatus | null>;
 }
 
 /**
@@ -74,4 +75,8 @@ export interface Job {
     created_at: string;
     completed_at: string | null;
     used_model_name: string;
+}
+
+export interface JobStatus {
+    status: "running" | "stopped";
 }

@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import type { Job } from "../types";
+import type { Job, JobStatus } from "../types";
 
 const JobsManagerService = {
     // async createJob(title: string, description: string): Promise<Job | null> {
@@ -22,6 +22,20 @@ const JobsManagerService = {
             return response.data;
         } catch (error) {
             console.error("Error fetching jobs:", error);
+            return null;
+        }
+    },
+
+    async getJobStatus(jobId: number): Promise<JobStatus | null> {
+        try {
+            const response = await axios.get(`/jobs/status/${jobId}`);
+            if (response.data.status) {
+                return { status: "running" };
+            } else {
+                return { status: "stopped" };
+            }
+        } catch (error) {
+            console.error("Error fetching job status:", error);
             return null;
         }
     },

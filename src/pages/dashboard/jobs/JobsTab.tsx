@@ -2,27 +2,47 @@ import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden"
 import { TitleBooks } from "../../../components/library/TitleBooks";
 import { useAuth } from "../../../hooks/useAuth";
 import { useJobsManager } from "../../../hooks/useJobsManager";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import type { Job } from "../../../types";
 
 export type JobPercentage = {
     title_name: string;
     percentages: number[];
 };
 
+export type JobStatus = {
+    job_id: number;
+    status: string;
+};
+
 export default function JobsTab() {
     const { isAuthenticated } = useAuth();
-    const { jobs, loading, startJob, deleteJob, stopJob, fetchJobsProgress } =
-        useJobsManager();
+    const {
+        jobs,
+        loading,
+        startJob,
+        deleteJob,
+        stopJob,
+        fetchJobsProgress,
+        fetchJobStatus,
+    } = useJobsManager();
     const [percentages, setPercentages] = useState<JobPercentage[]>([]);
+    const [jobStatus, setJobStatus] = useState<JobStatus[]>([]);
 
     const handleStartJob = (jobId: number) => {
         console.log(`Starting job with ID: ${jobId}`);
-        startJob(jobId);
+        startJob(jobId).then(() => {
+            fetchJobsStatus();
+        });
     };
 
     const handleStopJob = (jobId: number) => {
         console.log(`Stopping job with ID: ${jobId}`);
-        stopJob(jobId);
+        stopJob(jobId).then((res) => {
+            if (res) {
+                fetchJobsStatus();
+            }
+        });
     };
 
     const handleDeleteJob = (jobId: number) => {
@@ -30,10 +50,42 @@ export default function JobsTab() {
         deleteJob(jobId);
     };
 
+    const fetchJobsStatus = useCallback(() => {
+        console.log(jobs);
+        Object.values(jobs).forEach((job) => {
+            fetchJobStatus(job.id).then((status) => {
+                console.log(`Job ${job.id} status: ${status?.status}`);
+                setJobStatus((prevJobStatus) => {
+                    const existingIndex = prevJobStatus.findIndex(
+                        (item) => item.job_id === job.id,
+                    );
+
+                    if (existingIndex !== -1) {
+                        const updatedStatus = [...prevJobStatus];
+                        updatedStatus[existingIndex] = {
+                            job_id: job.id,
+                            status: status?.status || "unknown",
+                        };
+                        return updatedStatus;
+                    } else {
+                        return [
+                            ...prevJobStatus,
+                            {
+                                job_id: job.id,
+                                status: status?.status || "unknown",
+                            },
+                        ];
+                    }
+                });
+            });
+        });
+    }, [jobs, fetchJobStatus]);
+
     useEffect(() => {
         const socket = new WebSocket(
             "ws://" + window.location.host.split(":")[0] + ":8000/ws/process/",
         );
+        fetchJobsStatus();
 
         socket.onopen = function () {
             console.log("WebSocket connection opened");
@@ -77,7 +129,7 @@ export default function JobsTab() {
         };
 
         return () => socket.close();
-    }, [fetchJobsProgress]);
+    }, [fetchJobsProgress, jobs, fetchJobsStatus]);
 
     if (!isAuthenticated) {
         return <JokerAccessForbidden />;
@@ -124,7 +176,13 @@ export default function JobsTab() {
                             </div>
                             <div className="flex justify-center">
                                 <p className="border p-2 w-1/2">
-                                    Status: {job.status}
+                                    Status:{" "}
+                                    {
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status
+                                    }
                                 </p>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import JobsManagerService from "../services/jobsManagerService";
-import type { Job } from "../types";
+import type { Job, JobStatus } from "../types";
 import JobsManagerContext from "./JobsManagerContextDefinition";
 
 const JobsManagerContextProvider = ({
@@ -20,6 +20,19 @@ const JobsManagerContextProvider = ({
                 return false;
             }
         },
+        [],
+    );
+
+    const fetchJobStatus = useMemo(
+        () =>
+            async (jobId: number): Promise<JobStatus | null> => {
+                try {
+                    return await JobsManagerService.getJobStatus(jobId);
+                } catch (error) {
+                    console.error("Error fetching job status:", error);
+                    return null;
+                }
+            },
         [],
     );
 
@@ -44,14 +57,16 @@ const JobsManagerContextProvider = ({
         [],
     );
 
-    const stopJob = useCallback(async (jobId: number) => {
+    const stopJob = useCallback(async (jobId: number): Promise<boolean> => {
         try {
             const isStopped = await JobsManagerService.stopJob(jobId);
             if (isStopped) {
                 console.log("Job stopped successfully");
             }
+            return isStopped;
         } catch (error) {
             console.error("Error stopping job:", error);
+            return false;
         }
     }, []);
 
@@ -95,8 +110,17 @@ const JobsManagerContextProvider = ({
             deleteJob,
             stopJob,
             fetchJobsProgress,
+            fetchJobStatus,
         }),
-        [jobs, loading, startJob, deleteJob, stopJob, fetchJobsProgress],
+        [
+            jobs,
+            loading,
+            startJob,
+            deleteJob,
+            stopJob,
+            fetchJobsProgress,
+            fetchJobStatus,
+        ],
     );
 
     return (
