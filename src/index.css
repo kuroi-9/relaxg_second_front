@@ -109,6 +109,7 @@ body.modal-open {
 .primary-input:focus,
 .nav-link:active,
 .borderless-primary-button:active,
+.delete-button:active,
 .titles-grid-item:active {
     outline: 5px solid #fcd34d;
 }
@@ -242,6 +243,10 @@ body.modal-open {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.titles-title {
+    padding: 0.5rem;
 }
 
 .loader-bar {

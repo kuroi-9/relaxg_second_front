@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useState } from "react";
 import { LayoutBottomNav } from "../components/ProtectedLayoutBottomNav";
 // import Footer from "../components/ProtectedLayoutFooter";
 import LoadingComponent from "../components/auth/LoadingComponent";

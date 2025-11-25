@@ -3,7 +3,6 @@ import { TitleBooks } from "../../../components/library/TitleBooks";
 import { useAuth } from "../../../hooks/useAuth";
 import { useJobsManager } from "../../../hooks/useJobsManager";
 import { useState, useEffect, useCallback } from "react";
-import type { Job } from "../../../types";
 
 export type JobPercentage = {
     title_name: string;
@@ -153,32 +152,37 @@ export default function JobsTab() {
                 <div>Loading...</div>
             ) : (
                 jobs.map((job, index) => (
-                    <section key={index} className="mb-2">
+                    <section
+                        key={index}
+                        className={`${index === 0 ? "mt-0" : "mt-4"} p-2 border border-gray-500`}
+                    >
                         <div className="mb-2">
-                            <p className="mb-2">{job.title_name}</p>
-                            <div className="flex gap-2 justify-center mb-2">
-                                <button
-                                    className="primary-button"
-                                    onClick={() => handleStartJob(job.id)}
+                            <p className="mb-2 p-2 underline">
+                                {job.title_name}
+                            </p>
+                            <div className="flex justify-center mb-2">
+                                <p
+                                    className={`border p-2 w-full ${
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status === "Running"
+                                            ? "loader-bar"
+                                            : ""
+                                    }`}
+                                    style={
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status === "Running"
+                                            ? {
+                                                  backgroundColor: "green",
+                                                  border: "1px solid yellow",
+                                              }
+                                            : {}
+                                    }
                                 >
-                                    Start
-                                </button>
-                                <button
-                                    className="primary-button"
-                                    onClick={() => handleStopJob(job.id)}
-                                >
-                                    Stop
-                                </button>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => handleDeleteJob(job.id)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                            <div className="flex justify-center">
-                                <p className="border p-2 w-1/2">
-                                    Status:{" "}
+                                    {jobStatus.length > 0 ? "" : "N/A"}
                                     {
                                         jobStatus.find(
                                             (status) =>
@@ -186,6 +190,26 @@ export default function JobsTab() {
                                         )?.status
                                     }
                                 </p>
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    className="primary-button flex-1"
+                                    onClick={() => handleStartJob(job.id)}
+                                >
+                                    Start
+                                </button>
+                                <button
+                                    className="primary-button flex-1"
+                                    onClick={() => handleStopJob(job.id)}
+                                >
+                                    Stop
+                                </button>
+                                <button
+                                    className="delete-button flex-1"
+                                    onClick={() => handleDeleteJob(job.id)}
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                         <TitleBooks
@@ -196,8 +220,9 @@ export default function JobsTab() {
                                         item.title_name === job.title_name,
                                 )?.percentages
                             }
+                            padding={0}
+                            gapless={true}
                         />
-                        {index < jobs.length - 1 && <hr />}
                     </section>
                 ))
             )}

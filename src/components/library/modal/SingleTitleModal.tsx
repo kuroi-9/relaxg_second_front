@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../../index.css";
 import type { Title } from "../../../types";
 import { TitleBooks } from "../TitleBooks";
@@ -27,6 +27,15 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
         content,
         VITE_API_URL,
     } = props;
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleCreateJob = async () => {
+        setIsLoading(true);
+        if (secondaryFn) {
+            secondaryFn();
+        }
+    };
 
     // simple useEffect to capture ESC key to close the modal
     useEffect(() => {
@@ -75,15 +84,25 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
                     <TitleBooks
                         title_name={content.name}
                         percentages={undefined}
+                        padding={4}
+                        gapless={false}
                     />
                 </div>
 
                 <div className="footer">
-                    {secondaryFn && (
+                    {isLoading ? (
+                        <button
+                            disabled
+                            type="submit"
+                            className="primary-button"
+                        >
+                            <div className="loader-white" />
+                        </button>
+                    ) : (
                         <button
                             className="primary-button"
-                            onClick={secondaryFn}
-                            id="cancelBtn"
+                            onClick={() => handleCreateJob()}
+                            id="create-job-button"
                         >
                             Create job
                         </button>

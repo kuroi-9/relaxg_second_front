@@ -27,6 +27,7 @@ export default function LibraryTab() {
             })
             .then((res) => {
                 console.log(res);
+                window.location.href = `/dashboard/`;
             });
     };
 

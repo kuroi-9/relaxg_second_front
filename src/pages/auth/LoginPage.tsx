@@ -45,7 +45,7 @@ function LoginPage() {
     };
 
     return (
-        <div className="grid grid-cols-1 grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
+        <div className="grid grid-cols-1 p-4 grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
             <h2 className="text-2xl">Connexion</h2>
             <form
                 onSubmit={handleSubmit}

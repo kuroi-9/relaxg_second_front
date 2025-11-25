@@ -17,9 +17,13 @@ async function fetchBooksByTitleName(title_name: string): Promise<Book[]> {
 export function TitleBooks({
     title_name,
     percentages,
+    gapless,
+    padding,
 }: {
     title_name: string;
     percentages: number[] | undefined;
+    gapless: boolean;
+    padding: number;
 }) {
     const [books, setBooks] = useState<Book[]>([]);
 
@@ -37,8 +41,8 @@ export function TitleBooks({
         <div
             className={`titles-books ${
                 books.length > 16
-                    ? "md:grid md:grid-cols-2 md:gap-4 md:p-4 md:w-full flex flex-col items-start gap-4 p-4 w-full"
-                    : "flex flex-col items-start gap-4 p-4 w-full"
+                    ? `md:grid md:grid-cols-2 md:w-full flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
+                    : `flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
             }`}
         >
             {books.length === 0 && (
@@ -50,7 +54,22 @@ export function TitleBooks({
                 .map((book, index) => (
                     <div
                         key={index}
-                        className={`border flex ${percentages ? "justify-between" : "justify-center"} items-center p-2 h-min w-full`}
+                        className={`${gapless ? "" : "border"} flex ${percentages ? "justify-between" : "justify-center"} items-center p-2 h-min w-full`}
+                        style={
+                            !gapless
+                                ? {}
+                                : {
+                                      borderBottom:
+                                          "1px solid var(--foreground)",
+                                      borderLeft: "1px solid var(--foreground)",
+                                      borderRight:
+                                          "1px solid var(--foreground)",
+                                      borderTop:
+                                          index === 0
+                                              ? "1px solid var(--foreground)"
+                                              : undefined,
+                                  }
+                        }
                     >
                         <p
                             className={`${percentages ? "text-left w-5/6" : ""}`}
