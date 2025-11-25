@@ -55,7 +55,7 @@ export default function JobsTab() {
         console.log(jobs);
         Object.values(jobs).forEach((job) => {
             fetchJobStatus(job.id).then((status) => {
-                console.log(`Job ${job.id} status: ${status?.status}`);
+                console.warn(`Job ${job.id} status: ${status?.status}`);
                 setJobStatus((prevJobStatus) => {
                     const existingIndex = prevJobStatus.findIndex(
                         (item) => item.job_id === job.id,
@@ -99,7 +99,10 @@ export default function JobsTab() {
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            console.log(data.message);
+            if (data.success === true) {
+                console.warn(data.message);
+                fetchJobsStatus();
+            }
             if (data.title_name && data.percentages) {
                 setPercentages((prevPercentages) => {
                     const existingIndex = prevPercentages.findIndex(
@@ -182,13 +185,9 @@ export default function JobsTab() {
                                             : {}
                                     }
                                 >
-                                    {jobStatus.length > 0 ? "" : "N/A"}
-                                    {
-                                        jobStatus.find(
-                                            (status) =>
-                                                status.job_id === job.id,
-                                        )?.status
-                                    }
+                                    {jobStatus.find(
+                                        (status) => status.job_id === job.id,
+                                    )?.status || "N/A"}
                                 </p>
                             </div>
                             <div className="flex gap-2">

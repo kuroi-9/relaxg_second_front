@@ -86,7 +86,9 @@ export function TitleBooks({
                                     height: "min-content",
                                 }}
                             >
-                                {percentages[index] ?? "..."}
+                                {percentages[index]
+                                    ? `${percentages[index]}${" "}%`
+                                    : "..."}
                             </div>
                         )}
                     </div>
