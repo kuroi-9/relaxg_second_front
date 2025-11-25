@@ -62,7 +62,7 @@ const JobsManagerContextProvider = ({
         }
     }, []);
 
-    const deleteJob = useCallback(async (jobId: number) => {
+    const deleteJob = useCallback(async (jobId: number): Promise<boolean> => {
         try {
             const isDeleted = await JobsManagerService.deleteJob(jobId);
             if (isDeleted) {
@@ -72,8 +72,10 @@ const JobsManagerContextProvider = ({
             } else {
                 console.error("Failed to delete job");
             }
+            return isDeleted;
         } catch (error) {
             console.error("Error deleting job:", error);
+            return false;
         } finally {
             setLoading(false);
         }
