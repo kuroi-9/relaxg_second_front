@@ -55,9 +55,9 @@ export interface LibraryContextType {
 export interface JobsManagerContextType {
     jobs: Job[];
     loading: boolean;
-    startJob: (jobId: number) => Promise<Job | null>;
+    startJob: (jobId: number) => Promise<boolean>;
     deleteJob: (jobId: number) => Promise<boolean>;
-    stopJob: (jobId: number) => Promise<void>;
+    stopJob: (jobId: number) => Promise<boolean>;
     fetchJobsProgress: () => Promise<boolean>;
     fetchJobStatus: (jobId: number) => Promise<JobStatus | null>;
 }
@@ -78,5 +78,5 @@ export interface Job {
 }
 
 export interface JobStatus {
-    status: "running" | "stopped";
+    status: "Running" | "Stopped";
 }

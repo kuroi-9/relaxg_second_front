@@ -36,26 +36,18 @@ const JobsManagerContextProvider = ({
         [],
     );
 
-    const startJob = useMemo(
-        () =>
-            async (jobId: number): Promise<Job | null> => {
-                try {
-                    const updatedJob = await JobsManagerService.startJob(jobId);
-                    if (updatedJob) {
-                        setJobs((prevJobs) =>
-                            prevJobs.map((job) =>
-                                job.id === jobId ? updatedJob : job,
-                            ),
-                        );
-                    }
-                    return updatedJob;
-                } catch (error) {
-                    console.error("Error starting job:", error);
-                    return null;
-                }
-            },
-        [],
-    );
+    const startJob = useCallback(async (jobId: number): Promise<boolean> => {
+        try {
+            const isStarted = await JobsManagerService.startJob(jobId);
+            if (isStarted) {
+                console.log(`Job ${jobId} started`);
+            }
+            return isStarted;
+        } catch (error) {
+            console.error("Error starting job:", error);
+            return false;
+        }
+    }, []);
 
     const stopJob = useCallback(async (jobId: number): Promise<boolean> => {
         try {

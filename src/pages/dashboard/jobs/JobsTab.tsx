@@ -31,8 +31,10 @@ export default function JobsTab() {
 
     const handleStartJob = (jobId: number) => {
         console.log(`Starting job with ID: ${jobId}`);
-        startJob(jobId).then(() => {
-            fetchJobsStatus();
+        startJob(jobId).then((res) => {
+            if (res) {
+                fetchJobsStatus();
+            }
         });
     };
 

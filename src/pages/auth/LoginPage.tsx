@@ -93,7 +93,7 @@ function LoginPage() {
                 </div>
                 {isLoading ? (
                     <button disabled type="submit" className="primary-button">
-                        <div className="loader-foreground" />
+                        <div className="loader-white" />
                     </button>
                 ) : (
                     <button type="submit" className="primary-button">

@@ -30,9 +30,9 @@ const JobsManagerService = {
         try {
             const response = await axios.get(`/jobs/status/${jobId}`);
             if (response.data.status) {
-                return { status: "running" };
+                return { status: "Running" };
             } else {
-                return { status: "stopped" };
+                return { status: "Stopped" };
             }
         } catch (error) {
             console.error("Error fetching job status:", error);
@@ -55,15 +55,15 @@ const JobsManagerService = {
      * @param id The ID of the job to start.
      * @returns A promise that resolves to the updated job or null if an error occurs.
      */
-    async startJob(jobId: number): Promise<Job | null> {
+    async startJob(jobId: number): Promise<boolean> {
         try {
             const response = await axios.post("/jobs/inference/", {
                 id: jobId,
             });
-            return response.data;
+            return response.status === 202;
         } catch (error) {
             console.error("Error starting job:", error);
-            return null;
+            return false;
         }
     },
 
