@@ -47,7 +47,7 @@ export function TitleBooks({
         <div
             className={`titles-books ${
                 books.length > 16
-                    ? `md:grid md:grid-cols-2 md:gap-2 md:w-full flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
+                    ? `md:grid md:grid-cols-2 md:w-full flex flex-col items-start ${gapless ? "md:gap-2" : "gap-4"} p-${padding} w-full`
                     : `flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
             }`}
         >
