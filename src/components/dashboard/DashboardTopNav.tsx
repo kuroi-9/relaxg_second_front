@@ -5,7 +5,7 @@ export const DashboardTopNav: React.FC = () => {
     const location = useLocation();
 
     const getLinkClasses = (path: string) => {
-        return `primary-button ${location.pathname.startsWith(path) ? "active-link" : ""}`;
+        return `${location.pathname.startsWith(path) ? "active-link" : ""}`;
     };
 
     return (

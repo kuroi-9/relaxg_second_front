@@ -31,6 +31,12 @@ body.modal-open {
     overflow: hidden;
 }
 
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
 .primary-button {
     padding: 0.5rem;
     border-radius: 0;
@@ -110,6 +116,15 @@ body.modal-open {
 .nav-link:active,
 .borderless-primary-button:active,
 .delete-button:active,
+.primary-button:hover,
+.secondary-button:hover,
+.primary-input:hover,
+.nav-link:hover,
+.borderless-primary-button:hover,
+.delete-button:hover,
+.titles-grid-item:hover {
+    outline: 5px solid #fcd34d;
+}
 .titles-grid-item:active {
     outline: 5px solid #fcd34d;
 }
@@ -350,17 +365,20 @@ body.modal-open {
     }
 }
 
-.bottom-nav::-webkit-scrollbar {
+.bottom-nav::-webkit-scrollbar,
+.book-name::-webkit-scrollbar {
     height: 4px;
 }
 
-.bottom-nav::-webkit-scrollbar-track {
+.bottom-nav::-webkit-scrollbar-track,
+.book-name::-webkit-scrollbar-track {
     border-radius: 0;
     background-color: var(--background);
     border: 1px solid #464646;
 }
 
-.bottom-nav::-webkit-scrollbar-thumb {
+.bottom-nav::-webkit-scrollbar-thumb,
+.book-name::-webkit-scrollbar-thumb {
     border-radius: 0;
     background-color: #464646;
 }

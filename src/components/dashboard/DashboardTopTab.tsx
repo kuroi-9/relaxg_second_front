@@ -11,7 +11,7 @@ const Tab: React.FC<TabProps> = ({ activeTab, label, onClick }) => {
         onClick(label);
     };
 
-    let className = "";
+    let className = "prevent-select";
 
     if (activeTab.toLocaleLowerCase() === label.toLocaleLowerCase()) {
         className += " primary-button";

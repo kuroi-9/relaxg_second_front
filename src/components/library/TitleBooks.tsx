@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
 import type { Book } from "../../types";
+import useWindowSize from "../../hooks/useWindowSize";
 
 async function fetchBooksByTitleName(title_name: string): Promise<Book[]> {
     try {
@@ -26,6 +27,7 @@ export function TitleBooks({
     padding: number;
 }) {
     const [books, setBooks] = useState<Book[]>([]);
+    const dimensions = useWindowSize();
 
     useEffect(() => {
         fetchBooksByTitleName(title_name).then(setBooks);
@@ -37,11 +39,15 @@ export function TitleBooks({
         }
     }, [title_name, percentages]);
 
+    useEffect(() => {
+        console.log("Dimensions changed:", dimensions);
+    }, [dimensions]);
+
     return (
         <div
             className={`titles-books ${
                 books.length > 16
-                    ? `md:grid md:grid-cols-2 md:w-full flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
+                    ? `md:grid md:grid-cols-2 md:gap-2 md:w-full flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
                     : `flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
             }`}
         >
@@ -54,36 +60,51 @@ export function TitleBooks({
                 .map((book, index) => (
                     <div
                         key={index}
-                        className={`${gapless ? "" : "border"} flex ${percentages ? "justify-between" : "justify-center"} items-center p-2 h-min w-full`}
+                        className={`${gapless ? "grid grid-cols-[1fr_auto_5rem] gap-2" : "flex border justify-between"}  ${percentages ? "" : "justify-center"} items-center p-2 h-min w-full`}
                         style={
-                            !gapless
-                                ? {}
-                                : {
+                            gapless
+                                ? {
                                       borderBottom:
                                           "1px solid var(--foreground)",
                                       borderLeft: "1px solid var(--foreground)",
                                       borderRight:
                                           "1px solid var(--foreground)",
                                       borderTop:
-                                          index === 0
-                                              ? "1px solid var(--foreground)"
-                                              : undefined,
+                                          window.innerWidth < 768
+                                              ? index === 0
+                                                  ? "1px solid var(--foreground)"
+                                                  : ""
+                                              : books.length < 16
+                                                ? index === 0
+                                                    ? "1px solid var(--foreground)"
+                                                    : ""
+                                                : "1px solid var(--foreground)",
                                   }
+                                : {}
                         }
                     >
                         <p
-                            className={`${percentages ? "text-left w-5/6" : ""}`}
+                            className={`book-name ${percentages ? " text-left" : ""}`}
+                            style={
+                                gapless
+                                    ? {
+                                          overflowX: "auto",
+                                          whiteSpace: "nowrap",
+                                      }
+                                    : {}
+                            }
                         >
                             {book.name}
                         </p>
+                        {gapless ? (
+                            <hr className="border-l border-black h-full" />
+                        ) : null}
                         {percentages && (
                             <div
                                 style={{
                                     backgroundColor: "#171717",
                                     color: "white",
-                                    paddingRight: "0.25rem",
-                                    paddingLeft: "0.25rem",
-                                    height: "min-content",
+                                    minWidth: "5rem",
                                 }}
                             >
                                 {percentages[index]
