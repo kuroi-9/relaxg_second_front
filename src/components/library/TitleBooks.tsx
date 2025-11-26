@@ -96,9 +96,7 @@ export function TitleBooks({
                         >
                             {book.name}
                         </p>
-                        {gapless ? (
-                            <hr className="border-l border-black h-full" />
-                        ) : null}
+                        {gapless ? <hr className="border-r h-full" /> : null}
                         {percentages && (
                             <div
                                 style={{
