@@ -185,8 +185,11 @@ export default function JobsTab() {
                                             ? {
                                                   backgroundColor: "green",
                                                   border: "1px solid yellow",
+                                                  transition: "all 0.3s ease",
                                               }
-                                            : {}
+                                            : {
+                                                  transition: "all 0.3s ease",
+                                              }
                                     }
                                 >
                                     {jobStatus.find(

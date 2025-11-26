@@ -80,7 +80,7 @@ export function TitleBooks({
                         }
                     >
                         <p
-                            className={`book-name ${percentages ? " text-left" : ""}`}
+                            className={`book-name ${gapless ? " text-left" : ""}`}
                             style={
                                 gapless
                                     ? {
@@ -93,7 +93,8 @@ export function TitleBooks({
                             {book.name}
                         </p>
                         {gapless ? <hr className="border-r h-full" /> : null}
-                        {percentages && (
+
+                        {gapless && (
                             <div
                                 style={{
                                     backgroundColor: "#171717",
@@ -101,9 +102,11 @@ export function TitleBooks({
                                     minWidth: "5rem",
                                 }}
                             >
-                                {percentages[index]
-                                    ? `${percentages[index]}${" "}%`
-                                    : "..."}
+                                {percentages
+                                    ? percentages[index]
+                                        ? `${percentages[index]}${" "}%`
+                                        : "..."
+                                    : "N/A"}
                             </div>
                         )}
                     </div>

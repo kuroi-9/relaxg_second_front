@@ -110,12 +110,6 @@ body.modal-open {
     border: 1px solid gray;
 }
 
-.primary-button:active,
-.secondary-button:active,
-.primary-input:focus,
-.nav-link:active,
-.borderless-primary-button:active,
-.delete-button:active,
 .primary-button:hover,
 .secondary-button:hover,
 .primary-input:hover,
@@ -123,8 +117,14 @@ body.modal-open {
 .borderless-primary-button:hover,
 .delete-button:hover,
 .titles-grid-item:hover {
-    outline: 5px solid #fcd34d;
+    outline: 2.5px solid #fcd34d;
 }
+.primary-button:active,
+.secondary-button:active,
+.primary-input:focus,
+.nav-link:active,
+.borderless-primary-button:active,
+.delete-button:active,
 .titles-grid-item:active {
     outline: 5px solid #fcd34d;
 }
