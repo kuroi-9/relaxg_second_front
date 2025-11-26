@@ -103,6 +103,10 @@ export default function JobsTab() {
                 console.warn(data.message);
                 fetchJobsStatus();
             }
+            if (data.fail === true) {
+                alert(data.message);
+                fetchJobsStatus();
+            }
             if (data.title_name && data.percentages) {
                 setPercentages((prevPercentages) => {
                     const existingIndex = prevPercentages.findIndex(

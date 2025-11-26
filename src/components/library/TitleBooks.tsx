@@ -46,9 +46,9 @@ export function TitleBooks({
     return (
         <div
             className={`titles-books ${
-                books.length > 16
+                books.length > 6
                     ? `md:grid md:grid-cols-2 md:w-full flex flex-col items-start ${gapless ? "md:gap-2" : "gap-4"} p-${padding} w-full`
-                    : `flex flex-col items-start ${gapless ? "" : "gap-4"} p-${padding} w-full`
+                    : `flex flex-col items-start ${gapless ? "md:gap-2" : "gap-4"} p-${padding} w-full`
             }`}
         >
             {books.length === 0 && (
@@ -74,11 +74,7 @@ export function TitleBooks({
                                               ? index === 0
                                                   ? "1px solid var(--foreground)"
                                                   : ""
-                                              : books.length < 16
-                                                ? index === 0
-                                                    ? "1px solid var(--foreground)"
-                                                    : ""
-                                                : "1px solid var(--foreground)",
+                                              : "1px solid var(--foreground)",
                                   }
                                 : {}
                         }
