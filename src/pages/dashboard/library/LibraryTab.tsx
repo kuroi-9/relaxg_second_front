@@ -20,14 +20,23 @@ export default function LibraryTab() {
     const masonry = useRef<Masonry | null>(null);
     const [selectedTitle, setSelectedTitle] = useState<Title | null>(null);
 
-    const handleCreateJob = () => {
-        axiosInstance
+    const handleCreateJob = async (): Promise<boolean> => {
+        return axiosInstance
             .post("/library/process/", {
                 title_id: selectedTitle?.id,
             })
             .then((res) => {
-                console.log(res);
-                window.location.href = `/dashboard/`;
+                if (res.status === 200) {
+                    console.warn(
+                        `Job for ${selectedTitle?.name} created successfully!`,
+                    );
+                    return true;
+                } else {
+                    console.warn(
+                        `Failed to create job for ${selectedTitle?.name}`,
+                    );
+                    return false;
+                }
             });
     };
 

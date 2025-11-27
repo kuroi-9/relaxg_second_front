@@ -12,7 +12,7 @@ interface Props {
     open: boolean;
     cancelFn?: () => void;
     primaryFn?: () => void;
-    secondaryFn?: () => void;
+    secondaryFn?: () => Promise<boolean>;
     titleContent?: React.ReactNode;
     content: Title;
 }
@@ -29,11 +29,16 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
     } = props;
 
     const [isLoading, setIsLoading] = useState(false);
+    const [createJobText, setCreateJobText] = useState("Create Job");
 
     const handleCreateJob = async () => {
         setIsLoading(true);
         if (secondaryFn) {
-            secondaryFn();
+            const isJobCreated = await secondaryFn();
+            if (isJobCreated) {
+                setCreateJobText("Job Created!");
+            }
+            setIsLoading(false);
         }
     };
 
@@ -104,7 +109,7 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
                             onClick={() => handleCreateJob()}
                             id="create-job-button"
                         >
-                            Create job
+                            {createJobText}
                         </button>
                     )}
                     <button
