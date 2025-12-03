@@ -94,7 +94,7 @@ export default function JobsTab() {
                             {
                                 job_id: job.id,
                                 status: status?.status || "unknown",
-                                step: "ef",
+                                step: "",
                             },
                         ];
                     }
