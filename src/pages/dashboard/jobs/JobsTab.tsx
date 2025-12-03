@@ -12,6 +12,7 @@ export type JobPercentage = {
 export type JobStatus = {
     job_id: number;
     status: string;
+    step: string;
 };
 
 export default function JobsTab() {
@@ -51,6 +52,25 @@ export default function JobsTab() {
         deleteJob(jobId);
     };
 
+    const updateJobStep = (jobId: number, step: string) => {
+        console.log(`Updating job ${jobId} step to ${step}`);
+        setJobStatus((prevJobStatus) => {
+            const existingIndex = prevJobStatus.findIndex(
+                (item) => item.job_id === jobId,
+            );
+
+            if (existingIndex !== -1) {
+                const updatedStatus = [...prevJobStatus];
+                updatedStatus[existingIndex] = {
+                    ...updatedStatus[existingIndex],
+                    step,
+                };
+                return updatedStatus;
+            }
+            return prevJobStatus;
+        });
+    };
+
     const fetchJobsStatus = useCallback(() => {
         console.log(jobs);
         Object.values(jobs).forEach((job) => {
@@ -64,7 +84,7 @@ export default function JobsTab() {
                     if (existingIndex !== -1) {
                         const updatedStatus = [...prevJobStatus];
                         updatedStatus[existingIndex] = {
-                            job_id: job.id,
+                            ...updatedStatus[existingIndex],
                             status: status?.status || "unknown",
                         };
                         return updatedStatus;
@@ -74,6 +94,7 @@ export default function JobsTab() {
                             {
                                 job_id: job.id,
                                 status: status?.status || "unknown",
+                                step: "ef",
                             },
                         ];
                     }
@@ -108,6 +129,7 @@ export default function JobsTab() {
                 fetchJobsStatus();
             }
             if (data.title_name && data.percentages) {
+                updateJobStep(data.id, data.step);
                 setPercentages((prevPercentages) => {
                     const existingIndex = prevPercentages.findIndex(
                         (item) => item.title_name === data.title_name,
@@ -195,7 +217,15 @@ export default function JobsTab() {
                                 >
                                     {jobStatus.find(
                                         (status) => status.job_id === job.id,
-                                    )?.status || "N/A"}
+                                    )?.status === "Running"
+                                        ? jobStatus.find(
+                                              (status) =>
+                                                  status.job_id === job.id,
+                                          )?.step || "Running"
+                                        : jobStatus.find(
+                                              (status) =>
+                                                  status.job_id === job.id,
+                                          )?.status || "N/A"}
                                 </p>
                             </div>
                             <div className="flex gap-2">
