@@ -184,10 +184,11 @@ export default function JobsTab() {
                                         )?.status === "Running"
                                             ? {
                                                   backgroundColor: "green",
-                                                  border: "1px solid yellow",
+                                                  border: "1px solid green",
                                                   transition: "all 0.3s ease",
                                               }
                                             : {
+                                                  borderColor: "gray",
                                                   transition: "all 0.3s ease",
                                               }
                                     }

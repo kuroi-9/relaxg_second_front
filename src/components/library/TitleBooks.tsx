@@ -64,17 +64,15 @@ export function TitleBooks({
                         style={
                             gapless
                                 ? {
-                                      borderBottom:
-                                          "1px solid var(--foreground)",
-                                      borderLeft: "1px solid var(--foreground)",
-                                      borderRight:
-                                          "1px solid var(--foreground)",
+                                      borderBottom: "1px solid gray",
+                                      borderLeft: "1px solid gray",
+                                      borderRight: "1px solid gray",
                                       borderTop:
                                           window.innerWidth < 768
                                               ? index === 0
-                                                  ? "1px solid var(--foreground)"
+                                                  ? "1px solid gray"
                                                   : ""
-                                              : "1px solid var(--foreground)",
+                                              : "1px solid gray",
                                   }
                                 : {}
                         }
@@ -92,7 +90,12 @@ export function TitleBooks({
                         >
                             {book.name}
                         </p>
-                        {gapless ? <hr className="border-r h-full" /> : null}
+                        {gapless ? (
+                            <hr
+                                className="border-r h-full"
+                                style={{ borderColor: "gray" }}
+                            />
+                        ) : null}
 
                         {gapless && (
                             <div
