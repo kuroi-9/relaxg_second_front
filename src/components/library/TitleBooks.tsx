@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
 import type { Book } from "../../types";
 import useWindowSize from "../../hooks/useWindowSize";
+import { CheckMarkIcon } from "../../icons/globals";
 
 async function fetchBooksByTitleName(title_name: string): Promise<Book[]> {
     try {
@@ -60,7 +61,9 @@ export function TitleBooks({
                 .map((book, index) => (
                     <div
                         key={index}
-                        className={`${gapless ? "grid grid-cols-[1fr_auto_5rem] gap-2" : "flex border justify-between"}  ${percentages ? "" : "justify-center"} items-center p-2 h-min w-full`}
+                        className={`${gapless ? "grid grid-cols-[1fr_auto_5rem] gap-2" : "flex border justify-between"}  ${percentages ? "" : "justify-center"} items-center p-2 ${
+                            books.length > 6 ? "h-full" : "h-min"
+                        } w-full`}
                         style={
                             gapless
                                 ? {
@@ -100,16 +103,31 @@ export function TitleBooks({
                         {gapless && (
                             <div
                                 style={{
-                                    backgroundColor: "#171717",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor:
+                                        percentages &&
+                                        percentages[index] === 100
+                                            ? "transparent"
+                                            : "#171717",
                                     color: "white",
                                     minWidth: "5rem",
                                 }}
                             >
-                                {percentages
-                                    ? percentages[index]
-                                        ? `${percentages[index]}${" "}%`
-                                        : "..."
-                                    : "N/A"}
+                                {percentages ? (
+                                    percentages[index] ? (
+                                        percentages[index] === 100 ? (
+                                            <CheckMarkIcon />
+                                        ) : (
+                                            `${percentages[index]}${" "}%`
+                                        )
+                                    ) : (
+                                        "..."
+                                    )
+                                ) : (
+                                    "N/A"
+                                )}
                             </div>
                         )}
                     </div>
