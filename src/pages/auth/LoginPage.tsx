@@ -46,7 +46,7 @@ function LoginPage() {
 
     return (
         <div className="grid grid-cols-1 p-4 grid-rows-[minmax(0,_7rem)_minmax(0,_1fr)_minmax(0,_7rem)_minmax(0,_7rem)] items-center justify-center">
-            <h2 className="text-2xl">Connexion</h2>
+            <h2 className="text-2xl">Accès limité</h2>
             <form
                 onSubmit={handleSubmit}
                 className="grid grid-cols-[min(30rem,_100%)] grid-rows-[1fr_1fr_auto_auto] gap-2 justify-center"
@@ -56,7 +56,7 @@ function LoginPage() {
                         <input
                             id="username"
                             type="email"
-                            placeholder="Email"
+                            placeholder="Identifiant"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
@@ -69,7 +69,7 @@ function LoginPage() {
                         <input
                             id="password"
                             type="password"
-                            placeholder="Password"
+                            placeholder="Mot de passe"
                             value={password}
                             onChange={(e) =>
                                 setPassword(
@@ -85,19 +85,26 @@ function LoginPage() {
                 </div>
                 <div className="flex justify-center">
                     <hr
-                        className="border-2 w-28"
+                        className="border-2 rounded-full w-28"
                         style={{
                             borderColor: "var(--foreground)",
                         }}
                     />
                 </div>
                 {isLoading ? (
-                    <button disabled type="submit" className="primary-button">
+                    <button
+                        disabled
+                        type="submit"
+                        className="primary-button"
+                        style={{
+                            outline: "none",
+                        }}
+                    >
                         <div className="loader-white" />
                     </button>
                 ) : (
                     <button type="submit" className="primary-button">
-                        Se connecter
+                        Connexion
                     </button>
                 )}
                 {error && <p style={{ color: "red" }}>{error}</p>}
