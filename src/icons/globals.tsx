@@ -13,7 +13,7 @@ export function PlayButtonIcon() {
     );
 }
 
-export function StopSignIcon() {
+export function StopButtonIcon() {
     return (
         <svg
             width="24"

@@ -3,6 +3,7 @@ import { TitleBooks } from "../../../components/library/TitleBooks";
 import { useAuth } from "../../../hooks/useAuth";
 import { useJobsManager } from "../../../hooks/useJobsManager";
 import { useState, useEffect, useCallback } from "react";
+import { PlayButtonIcon, StopButtonIcon } from "../../../icons/globals";
 
 export type JobPercentage = {
     title_name: string;
@@ -53,7 +54,7 @@ export default function JobsTab() {
     };
 
     const updateJobStep = (jobId: number, step: string) => {
-        console.log(`Updating job ${jobId} step to ${step}`);
+        console.warn(`Updating job ${jobId} step to ${step}`);
         setJobStatus((prevJobStatus) => {
             const existingIndex = prevJobStatus.findIndex(
                 (item) => item.job_id === jobId,
@@ -231,19 +232,70 @@ export default function JobsTab() {
                             <div className="flex gap-2">
                                 <button
                                     className="primary-button flex-1"
-                                    onClick={() => handleStartJob(job.id)}
+                                    onClick={() => {
+                                        const currentStatus = jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status;
+                                        if (currentStatus === "Running") {
+                                            handleStopJob(job.id);
+                                        } else {
+                                            handleStartJob(job.id);
+                                        }
+                                    }}
+                                    disabled={
+                                        !jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status
+                                    }
+                                    style={
+                                        !jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status
+                                            ? {
+                                                  outline: "none",
+                                              }
+                                            : {}
+                                    }
                                 >
-                                    Start
-                                </button>
-                                <button
-                                    className="primary-button flex-1"
-                                    onClick={() => handleStopJob(job.id)}
-                                >
-                                    Stop
+                                    {jobStatus.find(
+                                        (status) => status.job_id === job.id,
+                                    )?.status && !loading ? (
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status === "Running" ? (
+                                            <StopButtonIcon />
+                                        ) : (
+                                            <PlayButtonIcon />
+                                        )
+                                    ) : (
+                                        <div className="loader-white"></div>
+                                    )}
                                 </button>
                                 <button
                                     className="delete-button flex-1"
                                     onClick={() => handleDeleteJob(job.id)}
+                                    disabled={
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status === "Running"
+                                    }
+                                    style={
+                                        jobStatus.find(
+                                            (status) =>
+                                                status.job_id === job.id,
+                                        )?.status === "Running"
+                                            ? {
+                                                  borderColor: "darkred",
+                                                  color: "darkred",
+                                                  outline: "none",
+                                              }
+                                            : {}
+                                    }
                                 >
                                     Delete
                                 </button>
