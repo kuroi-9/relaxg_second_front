@@ -5,7 +5,8 @@ import { TitleBooks } from "../TitleBooks";
 import "./modal.css";
 
 interface externalProps {
-    VITE_API_URL: string;
+    VITE_API_HOST: string;
+    VITE_API_PORT: string;
 }
 
 interface Props {
@@ -25,7 +26,8 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
         secondaryFn,
         titleContent,
         content,
-        VITE_API_URL,
+        VITE_API_HOST,
+        VITE_API_PORT,
     } = props;
 
     const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +84,7 @@ export const SingleTitleModal: React.FC<Props & externalProps> = (props) => {
 
                 <div className="body">
                     <img
-                        src={`${VITE_API_URL}library/titles/covers/?cover_path=${content.cover_image}`}
+                        src={`http://${VITE_API_HOST}:${VITE_API_PORT}/api/library/titles/covers/?cover_path=${content.cover_image}`}
                         alt={`${content.name} cover`}
                         className="modal-img m-4"
                     />

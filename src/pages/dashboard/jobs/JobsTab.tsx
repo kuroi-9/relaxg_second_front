@@ -106,7 +106,11 @@ export default function JobsTab() {
 
     useEffect(() => {
         const socket = new WebSocket(
-            "ws://" + window.location.host.split(":")[0] + ":8000/ws/process/",
+            "ws://" +
+                import.meta.env.VITE_API_HOST +
+                ":" +
+                import.meta.env.VITE_API_PORT +
+                "/ws/process/",
         );
         fetchJobsStatus();
 

@@ -11,7 +11,8 @@ import "../../../index.css";
 import type { Title } from "../../../types";
 import { TitleGridItem } from "../../../components/library/TitleGridItem";
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+const VITE_API_HOST = import.meta.env.VITE_API_HOST;
+const VITE_API_PORT = import.meta.env.VITE_API_PORT;
 
 export default function LibraryTab() {
     const { isAuthenticated } = useAuth();
@@ -113,7 +114,8 @@ export default function LibraryTab() {
                         window.history.replaceState(null, "#", " ");
                     }}
                     content={selectedTitle}
-                    VITE_API_URL={VITE_API_URL}
+                    VITE_API_HOST={VITE_API_HOST}
+                    VITE_API_PORT={VITE_API_PORT}
                 />
             )}
 
@@ -137,7 +139,8 @@ export default function LibraryTab() {
                                 key={title.id}
                                 title={title}
                                 setSelectedTitle={() => setSelectedTitle(title)}
-                                VITE_API_URL={VITE_API_URL}
+                                VITE_API_HOST={VITE_API_HOST}
+                                VITE_API_PORT={VITE_API_PORT}
                             />
                         ))
                     )

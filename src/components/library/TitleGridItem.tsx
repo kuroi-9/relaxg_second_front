@@ -2,7 +2,8 @@ import type { Title } from "../../types";
 import "../../index.css";
 
 interface externalGridItemProps {
-    VITE_API_URL: string;
+    VITE_API_HOST: string;
+    VITE_API_PORT: string;
 }
 
 interface TitleGridItemProps {
@@ -15,11 +16,13 @@ export const TitleGridItem: React.FC<
 > = ({
     title,
     setSelectedTitle,
-    VITE_API_URL,
+    VITE_API_HOST,
+    VITE_API_PORT,
 }: {
     title: Title;
     setSelectedTitle: (title: Title) => void;
-    VITE_API_URL: string;
+    VITE_API_HOST: string;
+    VITE_API_PORT: string;
 }) => {
     return (
         <a
@@ -32,7 +35,7 @@ export const TitleGridItem: React.FC<
         >
             {title.cover_image && (
                 <img
-                    src={`${VITE_API_URL}library/titles/covers/?cover_path=${title.cover_image}`}
+                    src={`http://${VITE_API_HOST}:${VITE_API_PORT}/api/library/titles/covers/?cover_path=${title.cover_image}`}
                     alt={`${title.name} cover`}
                     className="object-cover p-2"
                 />
