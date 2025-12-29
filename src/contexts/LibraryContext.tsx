@@ -41,12 +41,15 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
 
     const refreshCatalog = useCallback(async () => {
         try {
+            setLoading(true);
             await LibraryService.refreshCatalog();
             await fetchBooks();
             await fetchTitles();
+            setLoading(false);
             return true;
         } catch (error) {
             console.error("Error refreshing catalog:", error);
+            setLoading(false);
             throw error;
         }
     }, []);
