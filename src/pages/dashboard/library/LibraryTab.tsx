@@ -9,6 +9,7 @@ import { useLibrary } from "../../../hooks/useLibrary";
 import useWindowSize from "../../../hooks/useWindowSize";
 import "../../../index.css";
 import type { Title } from "../../../types";
+import { RefreshButtonIcon } from "../../../icons/globals";
 import { TitleGridItem } from "../../../components/library/TitleGridItem";
 
 const VITE_API_HOST = import.meta.env.VITE_API_HOST;
@@ -120,8 +121,22 @@ export default function LibraryTab() {
             )}
 
             <div className="flex w-full justify-center p-2">
-                <button className="secondary-button" onClick={refreshCatalog}>
-                    Refresh Catalog
+                <button
+                    disabled={loading}
+                    type="submit"
+                    className="secondary-button"
+                    onClick={!loading ? refreshCatalog : undefined}
+                    style={{
+                        outline: loading ? "none" : undefined,
+                        minWidth: "4rem",
+                        minHeight: "3rem",
+                    }}
+                >
+                    {loading ? (
+                        <div className="loader-white" />
+                    ) : (
+                        <RefreshButtonIcon />
+                    )}
                 </button>
             </div>
 

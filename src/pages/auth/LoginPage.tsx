@@ -91,22 +91,21 @@ function LoginPage() {
                         }}
                     />
                 </div>
-                {isLoading ? (
+
+                <div className="flex justify-center">
                     <button
-                        disabled
                         type="submit"
-                        className="primary-button"
-                        style={{
-                            outline: "none",
-                        }}
+                        className="primary-button w-full"
+                        disabled={isLoading}
+                        style={isLoading ? { outline: "none" } : undefined}
                     >
-                        <div className="loader-white" />
+                        {isLoading ? (
+                            <div className="loader-white" />
+                        ) : (
+                            "Connexion"
+                        )}
                     </button>
-                ) : (
-                    <button type="submit" className="primary-button">
-                        Connexion
-                    </button>
-                )}
+                </div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
             {/*<h4 className="text-center">

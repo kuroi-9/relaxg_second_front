@@ -8,7 +8,7 @@ const DashboardLayout: React.FC = () => {
     if (loading) {
         return (
             <div style={{ textAlign: "center", padding: "50px" }}>
-                Chargement de l'authentification...
+                Authentification...
             </div>
         );
     }
