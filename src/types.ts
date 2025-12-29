@@ -47,6 +47,7 @@ export interface LibraryContextType {
     titles: Title[];
     loading: boolean;
     isLibraryEmpty: boolean;
+    refreshCatalog: () => Promise<boolean>;
 }
 
 /**

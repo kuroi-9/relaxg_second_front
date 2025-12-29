@@ -3,6 +3,7 @@
 :root {
     --background: #fff;
     --foreground: #000;
+    --accent: #ff6dff;
 }
 
 #root {
@@ -13,6 +14,7 @@
     :root {
         --background: #000;
         --foreground: #fff;
+        --accent: #ff6dff;
     }
 }
 

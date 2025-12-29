@@ -16,7 +16,7 @@ const VITE_API_PORT = import.meta.env.VITE_API_PORT;
 
 export default function LibraryTab() {
     const { isAuthenticated } = useAuth();
-    const { titles, loading, isLibraryEmpty } = useLibrary();
+    const { titles, loading, isLibraryEmpty, refreshCatalog } = useLibrary();
     const dimensions = useWindowSize();
     const masonry = useRef<Masonry | null>(null);
     const [selectedTitle, setSelectedTitle] = useState<Title | null>(null);
@@ -118,6 +118,12 @@ export default function LibraryTab() {
                     VITE_API_PORT={VITE_API_PORT}
                 />
             )}
+
+            <div className="flex w-full justify-center p-2">
+                <button className="secondary-button" onClick={refreshCatalog}>
+                    Refresh Catalog
+                </button>
+            </div>
 
             <div
                 className="titles-grid"

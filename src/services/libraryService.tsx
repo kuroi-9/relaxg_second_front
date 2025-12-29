@@ -29,6 +29,16 @@ const LibraryService = {
             throw error;
         }
     },
+
+    async refreshCatalog(): Promise<boolean> {
+        try {
+            await axios.post("/library/refresh/");
+            return true;
+        } catch (error) {
+            console.error("Error refreshing catalog:", error);
+            throw error;
+        }
+    },
 };
 
 export default LibraryService;
