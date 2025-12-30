@@ -133,7 +133,7 @@ export default function LibraryTab() {
                     }}
                 >
                     {loading ? (
-                        <div className="loader-white" />
+                        <div className="loader-foreground" />
                     ) : (
                         <RefreshButtonIcon />
                     )}
