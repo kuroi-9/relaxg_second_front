@@ -33,12 +33,6 @@ body.modal-open {
     overflow: hidden;
 }
 
-.prevent-select {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-}
-
 .primary-button {
     padding: 0.5rem;
     border-radius: 0;
@@ -52,6 +46,9 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .borderless-primary-button {
@@ -67,6 +64,9 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .secondary-button {
@@ -82,6 +82,9 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .delete-button {
@@ -97,6 +100,9 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .primary-input {

@@ -47,19 +47,19 @@ export const LayoutBottomNav: React.FC<{
             >
                 <Link
                     to="/dashboard"
-                    className="borderless-primary-button prevent-select cursor-default md:w-min"
+                    className="borderless-primary-button cursor-default md:w-min"
                 >
                     Dashboard
                 </Link>
                 <Link
                     to="/queues"
-                    className="borderless-primary-button prevent-select cursor-default md:w-min"
+                    className="borderless-primary-button cursor-default md:w-min"
                 >
                     Queues
                 </Link>
                 <Link
                     to="/settings"
-                    className="borderless-primary-button prevent-select cursor-default md:w-min"
+                    className="borderless-primary-button cursor-default md:w-min"
                 >
                     Settings
                 </Link>
