@@ -3,7 +3,7 @@ import axiosInstance from "../../../api/axios";
 import Masonry from "masonry-layout";
 import { useEffect, useRef, useState } from "react";
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
-import { SingleTitleModal } from "../../../components/library/modal/SingleTitleModal";
+import { TitleBooks } from "../../../components/library/TitleBooks";
 import { useAuth } from "../../../hooks/useAuth";
 import { useLibrary } from "../../../hooks/useLibrary";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -11,6 +11,7 @@ import "../../../index.css";
 import type { Title } from "../../../types";
 import { RefreshButtonIcon } from "../../../icons/globals";
 import { TitleGridItem } from "../../../components/library/TitleGridItem";
+import { ModalGeneric } from "../../../components/generic/Modal";
 
 const VITE_API_HOST = import.meta.env.VITE_API_HOST;
 const VITE_API_PORT = import.meta.env.VITE_API_PORT;
@@ -21,8 +22,10 @@ export default function LibraryTab() {
     const dimensions = useWindowSize();
     const masonry = useRef<Masonry | null>(null);
     const [selectedTitle, setSelectedTitle] = useState<Title | null>(null);
+    const [createJobText, setCreateJobText] = useState("Create Job");
 
-    const handleCreateJob = async (): Promise<boolean> => {
+    // TODO: move in service file
+    const handleCreateJobService = async (): Promise<boolean> => {
         return axiosInstance
             .post("/library/process/", {
                 title_id: selectedTitle?.id,
@@ -40,6 +43,13 @@ export default function LibraryTab() {
                     return false;
                 }
             });
+    };
+
+    const handleCreateJob = async () => {
+        const isJobCreated = await handleCreateJobService();
+        if (isJobCreated) {
+            setCreateJobText("Job Created!");
+        }
     };
 
     /**
@@ -106,17 +116,71 @@ export default function LibraryTab() {
     return (
         <div className="h-full">
             {selectedTitle && (
-                <SingleTitleModal
+                // <SingleTitleModal
+                //     open={Boolean(selectedTitle)}
+                //     titleContent={selectedTitle?.name ?? null}
+                //     secondaryFn={() => handleCreateJob()}
+                //     cancelFn={() => {
+                //         setSelectedTitle(null);
+                //         window.history.replaceState(null, "#", " ");
+                //     }}
+                //     content={selectedTitle}
+                //     VITE_API_HOST={VITE_API_HOST}
+                //     VITE_API_PORT={VITE_API_PORT}
+                // />
+                <ModalGeneric
                     open={Boolean(selectedTitle)}
-                    titleContent={selectedTitle?.name ?? null}
-                    secondaryFn={() => handleCreateJob()}
-                    cancelFn={() => {
+                    escapeModalFn={() => {
                         setSelectedTitle(null);
                         window.history.replaceState(null, "#", " ");
                     }}
-                    content={selectedTitle}
-                    VITE_API_HOST={VITE_API_HOST}
-                    VITE_API_PORT={VITE_API_PORT}
+                    titleContent={selectedTitle?.name ?? null}
+                    bodyContent={
+                        <>
+                            <img
+                                src={`http://${VITE_API_HOST}:${VITE_API_PORT}/api/library/titles/covers/?cover_path=${selectedTitle.cover_image}`}
+                                alt={`${selectedTitle.name} cover`}
+                                className="modal-img m-4"
+                            />
+                            <TitleBooks
+                                title_name={selectedTitle.name}
+                                percentages={undefined}
+                                padding={4}
+                                gapless={false}
+                            />
+                        </>
+                    }
+                    footerContent={
+                        <>
+                            {loading ? (
+                                <button
+                                    disabled
+                                    type="submit"
+                                    className="primary-button"
+                                >
+                                    <div className="loader-white" />
+                                </button>
+                            ) : (
+                                <button
+                                    className="primary-button"
+                                    onClick={() => handleCreateJob()}
+                                    id="create-job-button"
+                                >
+                                    {createJobText}
+                                </button>
+                            )}
+                            <button
+                                className="secondary-button border h-full pl-2 pr-2 ml-2"
+                                onClick={() => {
+                                    setSelectedTitle(null);
+                                    window.history.replaceState(null, "#", " ");
+                                }}
+                                id="cancelBtn"
+                            >
+                                Close
+                            </button>
+                        </>
+                    }
                 />
             )}
 
