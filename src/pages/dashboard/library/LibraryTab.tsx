@@ -1,5 +1,4 @@
 import imagesLoaded from "imagesloaded";
-import axiosInstance from "../../../api/axios";
 import Masonry from "masonry-layout";
 import { useEffect, useRef, useState } from "react";
 import JokerAccessForbidden from "../../../components/auth/JokerAccessForbidden";
@@ -18,38 +17,22 @@ const VITE_API_PORT = import.meta.env.VITE_API_PORT;
 
 export default function LibraryTab() {
     const { isAuthenticated } = useAuth();
-    const { titles, loading, isLibraryEmpty, refreshCatalog } = useLibrary();
+    const { titles, loading, isLibraryEmpty, refreshCatalog, createJob } =
+        useLibrary();
     const dimensions = useWindowSize();
     const masonry = useRef<Masonry | null>(null);
     const [selectedTitle, setSelectedTitle] = useState<Title | null>(null);
     const [createJobText, setCreateJobText] = useState("Create Job");
-
-    // TODO: move in service file
-    const handleCreateJobService = async (): Promise<boolean> => {
-        return axiosInstance
-            .post("/library/process/", {
-                title_id: selectedTitle?.id,
-            })
-            .then((res) => {
-                if (res.status === 200) {
-                    console.warn(
-                        `Job for ${selectedTitle?.name} created successfully!`,
-                    );
-                    return true;
-                } else {
-                    console.warn(
-                        `Failed to create job for ${selectedTitle?.name}`,
-                    );
-                    return false;
-                }
-            });
-    };
+    const [isCreateJobLoading, setIsCreateJobLoading] =
+        useState<boolean>(false);
 
     const handleCreateJob = async () => {
-        const isJobCreated = await handleCreateJobService();
+        setIsCreateJobLoading(true);
+        const isJobCreated = await createJob(selectedTitle!.id);
         if (isJobCreated) {
             setCreateJobText("Job Created!");
         }
+        setIsCreateJobLoading(false);
     };
 
     /**
@@ -152,7 +135,7 @@ export default function LibraryTab() {
                     }
                     footerContent={
                         <>
-                            {loading ? (
+                            {isCreateJobLoading ? (
                                 <button
                                     disabled
                                     type="submit"

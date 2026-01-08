@@ -9,6 +9,16 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [isLibraryEmpty, setIsLibraryEmpty] = useState<boolean>(false);
 
+    const createJob = useCallback(async (title_id: number) => {
+        try {
+            const createdJob = await LibraryService.createJob(title_id);
+            return createdJob;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }, []);
+
     const fetchBooks = async () => {
         try {
             const fetchedBooks = await LibraryService.getBooks();
@@ -66,8 +76,9 @@ const LibraryProvider = ({ children }: { children: React.ReactNode }) => {
             loading,
             isLibraryEmpty: isLibraryEmpty,
             refreshCatalog,
+            createJob,
         }),
-        [books, titles, loading, isLibraryEmpty, refreshCatalog],
+        [books, titles, loading, isLibraryEmpty, refreshCatalog, createJob],
     );
 
     return (

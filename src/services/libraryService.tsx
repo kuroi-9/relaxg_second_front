@@ -2,6 +2,24 @@ import axios from "../api/axios";
 import type { Book, Title } from "../types"; // Importe tes types
 
 const LibraryService = {
+    async createJob(titleId: number): Promise<boolean> {
+        try {
+            const response = await axios.post("/library/process/", {
+                title_id: titleId,
+            });
+            console.warn(
+                `Job for title with ID ${titleId} created successfully!`,
+            );
+            return response.status === 200;
+        } catch (error) {
+            console.warn(
+                `Failed to create job for title with ID ${titleId}`,
+                error,
+            );
+            return false;
+        }
+    },
+
     /**
      * Every single book in the library is returned.
      * @returns An array of books or null if an error occurs.

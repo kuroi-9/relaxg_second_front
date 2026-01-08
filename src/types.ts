@@ -48,6 +48,7 @@ export interface LibraryContextType {
     loading: boolean;
     isLibraryEmpty: boolean;
     refreshCatalog: () => Promise<boolean>;
+    createJob: (title_id: number) => Promise<boolean>;
 }
 
 /**
