@@ -39,7 +39,7 @@ body.modal-open {
     border: 1px solid var(--foreground);
     background-color: #171717;
     color: white;
-    min-height: 41.8px;
+    min-height: 1.5rem;
     height: min-content;
     display: flex;
     flex-direction: row;
@@ -94,7 +94,7 @@ body.modal-open {
     background-color: var(--background);
     color: red;
     min-height: 1.5rem;
-    height: min-content;
+    height: full;
     display: flex;
     flex-direction: row;
     justify-content: center;
