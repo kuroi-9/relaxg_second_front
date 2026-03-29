@@ -228,6 +228,10 @@ body.modal-open {
     animation: spin 2s linear infinite;
 }
 
+div > .loader-white {
+    min-height: 1.5rem;
+}
+
 .loader-white {
     border: 2px solid white;
 
