@@ -103,7 +103,23 @@ function LoginPage() {
                         style={isLoading ? { outline: "none" } : undefined}
                     >
                         {isLoading ? (
-                            <div className="loader-white" />
+                            <>
+                                <p
+                                    style={{
+                                        color: "var(--foreground)",
+                                    }}
+                                >
+                                    ...
+                                </p>
+                                <div className="loader-white" />
+                                <p
+                                    style={{
+                                        color: "var(--foreground)",
+                                    }}
+                                >
+                                    ...
+                                </p>
+                            </>
                         ) : (
                             "Connexion"
                         )}
