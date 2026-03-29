@@ -106,7 +106,7 @@ function LoginPage() {
                             <>
                                 <p
                                     style={{
-                                        color: "var(--foreground)",
+                                        color: "#000",
                                     }}
                                 >
                                     ...
@@ -114,7 +114,7 @@ function LoginPage() {
                                 <div className="loader-white" />
                                 <p
                                     style={{
-                                        color: "var(--foreground)",
+                                        color: "#000",
                                     }}
                                 >
                                     ...
