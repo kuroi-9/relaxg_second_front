@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import "../../index.css";
 import "./LoginPage.style.css";
 import { AxiosError } from "axios";
@@ -10,6 +11,7 @@ function LoginPage() {
     const [error, setError] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,6 +21,7 @@ function LoginPage() {
             const response = await login(username, password);
             console.log(response);
             setIsLoading(false);
+            navigate("/dashboard");
         } catch (err) {
             const errorMessage = () => {
                 if (err instanceof AxiosError) {

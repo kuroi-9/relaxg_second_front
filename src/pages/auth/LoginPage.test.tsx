@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import * as useAuthHook from "../../hooks/useAuth";
 import LoginPage from "./LoginPage";
 import { AxiosError, type AxiosResponse } from "axios";
+// Use Chai's .exist matcher for DOM assertions
 
 // Mock the useAuth hook
 vi.mock("../../hooks/useAuth", () => ({
@@ -35,82 +36,62 @@ describe("Login", () => {
         });
     });
 
-    const renderWithRouter = (ui: React.ReactElement) => {
-        return render(<BrowserRouter>{ui}</BrowserRouter>);
-    };
+    const renderWithRouter = (ui) =>
+        render(<BrowserRouter>{ui}</BrowserRouter>);
 
-    it("should render the login form with French labels", () => {
+    it("renders the login form with French labels", () => {
         renderWithRouter(<LoginPage />);
-
-        expect(screen.getByText("Connexion")).toBeTruthy();
-        expect(screen.getAllByPlaceholderText(/Email/i)).toBeTruthy();
-        expect(screen.getByPlaceholderText(/Password/i)).toBeTruthy();
-        expect(
-            screen.getByRole("button", { name: /se connecter/i }),
-        ).toBeTruthy();
+        expect(screen.getByText("Connexion")).to.exist;
+        expect(screen.getByPlaceholderText("Identifiant")).to.exist;
+        expect(screen.getByPlaceholderText("Mot de passe")).to.exist;
+        expect(screen.getByRole("button", { name: "Connexion" })).to.exist;
     });
 
-    it("should update username input value", () => {
+    it("updates username input value", () => {
         renderWithRouter(<LoginPage />);
-
-        const usernameInput = screen.getByPlaceholderText(
-            /Email/i,
-        ) as HTMLInputElement;
+        const usernameInput = screen.getByPlaceholderText("Identifiant");
         fireEvent.change(usernameInput, {
             target: { value: "testuser@relaxg.app" },
         });
-
         expect(usernameInput.value).toBe("testuser@relaxg.app");
     });
 
-    it("should update password input value", () => {
+    it("updates password input value", () => {
         renderWithRouter(<LoginPage />);
-
-        const passwordInput = screen.getByPlaceholderText(
-            /Password/i,
-        ) as HTMLInputElement;
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
         fireEvent.change(passwordInput, { target: { value: "testpassword" } });
-
         expect(passwordInput.value).toBe("testpassword");
     });
 
-    it("should filter out spaces from password input", () => {
+    it("filters out spaces from password input", () => {
         renderWithRouter(<LoginPage />);
-
-        const passwordInput = screen.getByPlaceholderText(
-            /Password/i,
-        ) as HTMLInputElement;
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
         fireEvent.change(passwordInput, { target: { value: "test password" } });
-
         expect(passwordInput.value).toBe("");
     });
 
-    it("should display error message when login fails", async () => {
+    it("displays error message when login fails", async () => {
         mockLogin.mockRejectedValueOnce(
             new AxiosError(undefined, undefined, undefined, undefined, {
                 statusText: "Unauthorized",
                 status: 401,
             } as AxiosResponse),
         );
-
         renderWithRouter(<LoginPage />);
-
-        const usernameInput = screen.getByPlaceholderText(/Email/i);
-        const passwordInput = screen.getByPlaceholderText(/Password/i);
+        const usernameInput = screen.getByPlaceholderText("Identifiant");
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
         const loginButton = screen.getByRole("button", {
-            name: /se connecter/i,
+            name: "Connexion",
         });
-
         fireEvent.change(usernameInput, {
             target: { value: "testuser@relaxg.app" },
         });
         fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
         fireEvent.click(loginButton);
-
         await waitFor(() => {
             expect(
                 screen.getByText("Unauthorized, please check your credentials"),
-            ).toBeTruthy();
+            ).to.exist;
         });
         expect(mockLogin).toHaveBeenCalledWith(
             "testuser@relaxg.app",
@@ -118,17 +99,14 @@ describe("Login", () => {
         );
     });
 
-    it("should navigate to dashboard on successful login", async () => {
+    it("navigates to dashboard on successful login", async () => {
         mockLogin.mockResolvedValueOnce({ success: true });
-
         renderWithRouter(<LoginPage />);
-
-        const usernameInput = screen.getByPlaceholderText(/Email/i);
-        const passwordInput = screen.getByPlaceholderText(/Password/i);
+        const usernameInput = screen.getByPlaceholderText("Identifiant");
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
         const loginButton = screen.getByRole("button", {
-            name: /se connecter/i,
+            name: "Connexion",
         });
-
         fireEvent.change(usernameInput, {
             target: { value: "testuser@relaxg.app" },
         });
@@ -136,7 +114,6 @@ describe("Login", () => {
             target: { value: "correctpassword" },
         });
         fireEvent.click(loginButton);
-
         await waitFor(() => {
             expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
         });
@@ -146,59 +123,51 @@ describe("Login", () => {
         );
     });
 
-    it("should clear error message on new submit attempt", async () => {
+    it("clears error message on new submit attempt", async () => {
         mockLogin.mockRejectedValueOnce(
             new AxiosError(undefined, undefined, undefined, undefined, {
                 statusText: "Unauthorized",
                 status: 401,
             } as AxiosResponse),
         );
-
         renderWithRouter(<LoginPage />);
-
-        const usernameInput = screen.getByPlaceholderText(/Email/i);
-        const passwordInput = screen.getByPlaceholderText(/Password/i);
+        const usernameInput = screen.getByPlaceholderText("Identifiant");
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
         const loginButton = screen.getByRole("button", {
-            name: /se connecter/i,
+            name: "Connexion",
         });
-
         // First failed attempt
         fireEvent.change(usernameInput, {
             target: { value: "testuser@relaxg.app" },
         });
         fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
         fireEvent.click(loginButton);
-
         await waitFor(() => {
             expect(
                 screen.getByText("Unauthorized, please check your credentials"),
-            ).toBeTruthy();
+            ).to.exist;
         });
-
         // Second attempt should clear the error
         mockLogin.mockResolvedValueOnce({ success: true });
         fireEvent.change(passwordInput, {
             target: { value: "correctpassword" },
         });
         fireEvent.click(loginButton);
-
         await waitFor(() => {
             expect(
                 screen.queryByText(
                     "Login failed. Please check your credentials.",
                 ),
-            ).toBeFalsy();
+            ).to.not.exist;
         });
     });
 
-    it("should have required attributes on inputs", () => {
+    it("has required attributes on inputs", () => {
         renderWithRouter(<LoginPage />);
-
-        const usernameInput = screen.getByPlaceholderText(/Email/i);
-        const passwordInput = screen.getByPlaceholderText(/Password/i);
-
-        expect(usernameInput.hasAttribute("required")).toBe(true);
-        expect(passwordInput.hasAttribute("required")).toBe(true);
-        expect(passwordInput.getAttribute("type")).toBe("password");
+        const usernameInput = screen.getByPlaceholderText("Identifiant");
+        const passwordInput = screen.getByPlaceholderText("Mot de passe");
+        expect(usernameInput.hasAttribute("required")).to.be.true;
+        expect(passwordInput.hasAttribute("required")).to.be.true;
+        expect(passwordInput.getAttribute("type")).to.equal("password");
     });
 });
