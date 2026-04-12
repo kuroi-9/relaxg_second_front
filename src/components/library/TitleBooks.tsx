@@ -56,82 +56,79 @@ export function TitleBooks({
                 <div className="min-h-16 text-center w-full">Loading...</div>
             )}
 
-            {books
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((book, index) => (
-                    <div
-                        key={index}
-                        className={`${gapless ? "grid grid-cols-[1fr_auto_5rem] gap-2" : "flex border justify-between"}  ${percentages ? "" : "justify-center"} items-center p-2 ${
-                            books.length > 6 ? "h-full" : "h-min"
-                        } w-full`}
+            {books.map((book, index) => (
+                <div
+                    key={index}
+                    className={`${gapless ? "grid grid-cols-[1fr_auto_5rem] gap-2" : "flex border justify-between"}  ${percentages ? "" : "justify-center"} items-center p-2 ${
+                        books.length > 6 ? "h-full" : "h-min"
+                    } w-full`}
+                    style={
+                        gapless
+                            ? {
+                                  borderBottom: "1px solid gray",
+                                  borderLeft: "1px solid gray",
+                                  borderRight: "1px solid gray",
+                                  borderTop:
+                                      window.innerWidth < 768
+                                          ? index === 0
+                                              ? "1px solid gray"
+                                              : ""
+                                          : "1px solid gray",
+                              }
+                            : {}
+                    }
+                >
+                    <p
+                        className={`book-name ${gapless ? " text-left" : ""}`}
                         style={
                             gapless
                                 ? {
-                                      borderBottom: "1px solid gray",
-                                      borderLeft: "1px solid gray",
-                                      borderRight: "1px solid gray",
-                                      borderTop:
-                                          window.innerWidth < 768
-                                              ? index === 0
-                                                  ? "1px solid gray"
-                                                  : ""
-                                              : "1px solid gray",
+                                      overflowX: "auto",
+                                      whiteSpace: "nowrap",
                                   }
                                 : {}
                         }
                     >
-                        <p
-                            className={`book-name ${gapless ? " text-left" : ""}`}
-                            style={
-                                gapless
-                                    ? {
-                                          overflowX: "auto",
-                                          whiteSpace: "nowrap",
-                                      }
-                                    : {}
-                            }
-                        >
-                            {book.name}
-                        </p>
-                        {gapless ? (
-                            <hr
-                                className="border-r h-full"
-                                style={{ borderColor: "gray" }}
-                            />
-                        ) : null}
+                        {book.name}
+                    </p>
+                    {gapless ? (
+                        <hr
+                            className="border-r h-full"
+                            style={{ borderColor: "gray" }}
+                        />
+                    ) : null}
 
-                        {gapless && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor:
-                                        percentages &&
-                                        percentages[index] === 100
-                                            ? "transparent"
-                                            : "#171717",
-                                    color: "white",
-                                    minWidth: "5rem",
-                                }}
-                            >
-                                {percentages ? (
-                                    percentages[index] ? (
-                                        percentages[index] === 100 ? (
-                                            <CheckMarkIcon />
-                                        ) : (
-                                            `${percentages[index]}${" "}%`
-                                        )
+                    {gapless && (
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor:
+                                    percentages && percentages[index] === 100
+                                        ? "transparent"
+                                        : "#171717",
+                                color: "white",
+                                minWidth: "5rem",
+                            }}
+                        >
+                            {percentages ? (
+                                percentages[index] ? (
+                                    percentages[index] === 100 ? (
+                                        <CheckMarkIcon />
                                     ) : (
-                                        "..."
+                                        `${percentages[index]}${" "}%`
                                     )
                                 ) : (
-                                    "N/A"
-                                )}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                                    "..."
+                                )
+                            ) : (
+                                "N/A"
+                            )}
+                        </div>
+                    )}
+                </div>
+            ))}
         </div>
     );
 }
